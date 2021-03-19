@@ -1,13 +1,87 @@
+/* CSS variables */
+:root {
+  --colour0-primary: hsl(0, 0%, 90%);
+  --colour0-secondary: hsl(210, 6%, 12%);
+}
+/* END CSS variables */
+
+/* base tag selectors */
+/* only base tag and their pseudo-classes/pseudo-elements allowed */
 html {
-  background: #1d1f21
+  box-sizing: border-box;
+  height: 100%;
+  font-size: 100%;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  padding: 0;
+  margin: 0;
 }
 
-.sidebar h1 {
-  font-size: 1.16667em;
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
 }
 
-h1, h2, h3, label {
+body {
+  min-height: 100%;
+  font-family: Verdana, sans-serif;
+  color: var(--colour0-primary);
+  background: var(--colour0-secondary);
+}
+
+h1, 
+h2, 
+h3, 
+label {
   font-family: Tahoma;
+}
+
+pre {
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+/* forms */
+input,
+select,
+textarea,
+button {
+  box-sizing: border-box;
+  min-width: 44px;
+  min-height: 44px;
+  width: 100%;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  border-radius: 5px;
+  padding: 0.5em;
+}
+
+label {
+  cursor: pointer;
+}
+
+select {
+  text-align-last: center;
+  color: var(--colour0-primary);
+  background-image: linear-gradient(#282a2e, #111111);
+  border-color: #111;
+}
+
+select::-ms-expand {
+  color: #000;
+}
+
+option {
+  color: var(--colour0-primary);
+  background-color: var(--colour0-secondary);
 }
 
 textarea {
@@ -19,13 +93,23 @@ textarea {
   background: #4c4f57;
 }
 
-pre {
-  white-space: pre-wrap;       /* Since CSS 2.1 */
-  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-  white-space: -pre-wrap;      /* Opera 4-6 */
-  white-space: -o-pre-wrap;    /* Opera 7 */
-  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+/* END forms */
+
+a:visited {
+  text-decoration: none;
 }
+
+a:link {
+  text-decoration: none;
+}
+
+/* END tag selectors */
+
+.sidebar h1 {
+  font-size: 1.16667em;
+}
+
+
 
 a {
   color: #87CEFA;
@@ -34,15 +118,6 @@ a {
 .a {
   color: #87CEFA;
   font-family: Verdana, sans-serif;
-}
-
-select * {
-  color: #000;
-}
-
-* {
-  font-family: Verdana, sans-serif;
-  color: #fff;
 }
 
 .subtitle {
@@ -57,14 +132,6 @@ select * {
 .content * {
   max-width: 200px;
   max-height: 200px;
-}
-
-a:visited {
-  text-decoration: none;
-}
-
-a:link {
-  text-decoration: none;
 }
 
 .views {
@@ -150,18 +217,9 @@ a:link {
   word-break: break-word;
 }
 
-select {
-  background-image: linear-gradient(#282a2e, #111111);
-  border-color: #111;
-  border-radius: 5px;
-  text-align-last: center;
-}
 
-select::-ms-expand {
-  color: #000;
-}
-
-input[type="text"], input[type="number"] {
+input[type="text"], 
+input[type="number"] {
   border-radius: 5px;
   background: #4c4f57;
   color: #fff;
@@ -183,7 +241,8 @@ input[type="text"], input[type="number"] {
   margin: 0 1em 0 0;
 }
 
-.subheader li a:visited, .subheader li a:link {
+.subheader li a:visited, 
+.subheader li a:link {
   color: #fff;
 }
 
@@ -199,7 +258,8 @@ input[type="text"], input[type="number"] {
   margin: 0 1em 0 0;
 }
 
-.header li a:visited, .header li a:link {
+.header li a:visited, 
+.header li a:link {
   color: #fff;
 }
 
