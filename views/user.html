@@ -1,28 +1,34 @@
 {% extends 'components/shell.html' %}
 {% block content %}
-<div class="user-header" style="background-image: url('/banners/{{ props.service }}/{{ props.id }}');">
-  <div class="user-header-avatar" style="background-image: url('/icons/{{ props.service }}/{{ props.id }}');"></div>
-  <div class="user-header-info">
-    <div id="user-header-info-top" class="user-header-info-top">
-      <a href="/{{ props.service }}/user/{{ props.id }}"><span class="user-header-info-title">{{ props.name }}</span></a>
-      {% if props.service == "patreon" %}
-      <a target="_blank" rel="noreferrer" href="https://www.patreon.com/user?u={{ props.id }}">
-      {% elif props.service == "fanbox" %}
-      <a target="_blank" rel="noreferrer" href="https://www.pixiv.net/fanbox/creator/{{ props.id }}">
-      {% elif props.service == "subscribestar" %}
-      <a target="_blank" rel="noreferrer" href="https://subscribestar.adult/{{ props.id }}">
-      {% elif props.service == "gumroad" %}
-      <a target="_blank" rel="noreferrer" href="https://gumroad.com/{{ props.id }}">
-      {% elif props.service == "dlsite" %}
-      <a target="_blank" rel="noreferrer" href="https://www.dlsite.com/eng/circle/profile/=/maker_id/{{ props.id }}">
-      {% endif %}
-        <div class="user-header-info-{{ props.service }}"></div>
-      </a>
+<!-- originally recent.js -->
+<div class="views">
+  <div class="sidebar">
+    <input
+      id="search-input"
+      type="text"
+      placeholder="search for posts..."
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+    >
+    <h1>Information</h1>
+    <div class="results" id="results">
+      <div id="info-block"></div>
+      <div id="extra-info-block"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/unfetch@4.1.0/polyfill/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/user.js') }}"></script>
+    <h1>Options</h1>
+    <div class="results">
+      <li><a href="/requests/new?user={{ props.id }}&service={{ props.service }}">Request update</a></li>
+      <li><a href="/posts/upload?user={{ props.id }}&service={{ props.service }}">Upload file</a></li>
+      <li><a href="{{ request.path }}/rss">RSS</a></li>
     </div>
   </div>
+  {% include 'components/list.html' %}
 </div>
-{% include 'components/list.html' %}
-<script src="{{ url_for('static', filename='js/user.js') }}" user="{{ props.id }}" service="{{ props.service }}"></script>
-<script src="{{ url_for('static', filename='js/post.js') }}"></script>
-<script src="{{ url_for('static', filename='js/expander.js') }}"></script>
 {% endblock %}

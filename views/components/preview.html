@@ -1,7 +1,7 @@
 {% set href = '/' ~ post['service'] ~ '/user/' ~ post['user'] ~ '/post/' ~ post['id'] %}
 
 {% with %}
-  {% if is_image %}
+  {% if post['file'].path and post['file'].path|lower|regex_match("\.(gif|jpe?g|png|webp)$") %}
     {% set src = post['file'].path %}
   {% endif %}
   {% set title = post['title'] %}

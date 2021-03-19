@@ -1,4 +1,2 @@
 CACHE_TYPE = 'simple'
 CACHE_DEFAULT_TIMEOUT = 60
-SECRET_KEY='lololol' # You should change this to a secure string!
-SESSION_REFRESH_EACH_REQUEST=False

@@ -1,47 +1,23 @@
 {% extends 'components/shell.html' %}
 {% block content %}
 <div class="page" id="page">
-  {% if results|length %}
-  <div class="favorites-opts">
-    <form
-      action="/config/set"
-      method="POST"
-      enctype="multipart/form-data"
-    >
-      <select name="favorites_sort" onchange="javascript:this.form.submit()">
-        <option value="published" {{ 'selected' if session.get('favorites_sort') == 'published' }}>Date posted</option>
-        <option value="added" {{ 'selected' if session.get('favorites_sort') == 'added' }}>Date imported</option>
-      </select>
-    </form>
-  </div>
-  <div class="pure-g">
-    {% for user in results %}
-      <div class="pure-u-1 pure-u-sm-1-2 pure-u-md-1-2 pure-u-lg-1-2 pure-u-xl-1-3 {{ user.service }}-{{ user.user }}">
-        <a href="/{{ user.service }}/user/{{ user.user }}">
-          <div class="activity-view">
-            <div class="activity-view-avatar" style="background-image: url('/icons/{{ user.service }}/{{ user.user }}');"></div>
-            <div class="activity-view-main">
-              <div class="activity-view-p">
-                <span class="activity-view-name">{{ user.name }}</span>
-                {% if user.relative_date %}
-                  <span class="activity-view-update">{{ props.phrase }} {{ user.relative_date }}</span>
-                {% else %}
-                  <span class="activity-view-update subtitle">{{ user.error_msg }}</span>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-        </a>
-      </div>
-    {% endfor %}
-  </div>
-  {% else %}
-    <div class="no-posts">
-      <h1 class="subtitle">You haven't favorited anyone!</h1>
-      <span class="subtitle">Go find some creators and come back.</span>
-      <div id="migrations"></div>
-    </div>
-    <script src="{{ url_for('static', filename='js/migrate-favorites.js') }}"></script>
-  {% endif %}
+  <table class="search-results" width="100%">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Service</th>
+      </tr>
+    </thead>
+    <tbody id="favorites-list">
+      <noscript>
+        <tr>
+          <td class="subtitle">This feature requires Javascript.</td>
+          <td></td>
+        </tr>
+      </noscript>
+    </tbody>
+  </table>
 </div>
+<script src="https://unpkg.com/unfetch@4.1.0/polyfill/index.js"></script>
+<script src="{{ url_for('static', filename='/js/favorites.js') }}"></script>
 {% endblock %}

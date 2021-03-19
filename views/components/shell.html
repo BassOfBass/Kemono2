@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ props.name ~ " | Kemono" if props.name else "Kemono" }}</title>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.5/build/base-min.css">
-    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.5/build/grids-min.css">
-    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.5/build/grids-responsive-min.css">
+    <title>Kemono</title>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css@8.0.1/normalize.css">
+    <!-- TODO: Replace push notifications with Python library -->
+    <!--<meta name="push_key" content="${process.env.VAPID_PUBLIC_KEY}"/>-->
     {% if props.compatibility %}
       <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/compatibility.css') }}">
     {% else %}
@@ -18,21 +18,18 @@
     {% if props.service %}
       <meta name="service" content="{{ props.service }}"/>
     {% endif %}
-    {% if props.id %}
-      <meta name="id" content="{{ props.id }}"/>
-    {% endif %}
     {% if props.importId %}
       <meta name="importId" content="{{ props.importId }}"/>
     {% endif %}
     {% if props.count %}
       <meta name="count" content="{{ props.count }}"/>
     {% endif %}
-    {% if props.posts|length %}
-      {% if props.posts[0].published %}
-        <meta name="published" content="{{ props.posts[0].published }}"/>
+    {% if props.posts %}
+      {% if props.posts.published %}
+        <meta name="published" content="{{ props.posts.published }}"/>
       {% endif %}
-      <meta name="added" content="{{ props.posts[0].added }}"/>
-      <meta name="id" content="{{ props.posts[0].id }}"/>
+      <meta name="added" content="{{ props.posts.added }}"/>
+      <meta name="id" content="{{ props.posts.id }}"/>
     {% endif %}
   </head>
   <body>

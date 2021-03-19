@@ -1,35 +1,37 @@
 {% extends 'components/shell.html' %}
 {% block content %}
   <div class="page" id="page">
-    {% if results|length %}
-      <div class="paginator" id="paginator-top">
-        {% include 'components/paginator.html' %}
-      </div>
-    {% endif %}
-    {% if results|length == 0 %}
-      <div class="no-posts">
-        <p class="subtitle">No artists found for your query.</p>
-      </div>
-    {% else %}
-      <table class="search-results" width="100%">
-        <thead>
+    <table class="search-results" width="100%">
+      <thead>
+        <tr>
+          <th width="50px">Icon</th>
+          <th>Name</th>
+          <th>Transliteration</th>
+          <th>Service</th>
+          <th>Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if results|length == 0 %}
           <tr>
-            <th width="50px"></th>
-            <th>Name</th>
-            <th>Service</th>
-            <th>Updated</th>
+            <td></td>
+            <td class="subtitle">No artists found for your query.</td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
-        </thead>
-        <tbody>
+        {% else %}
           {% for artist in results %}
             <tr class="artist-row">
               <td>
-                <a href="/{{ artist['service'] }}/{{ 'server' if artist['service'] == 'discord' else 'user' }}/{{ artist['id'] }}">
-                  <div class="user-icon" style="background-image: url('/icons/{{ artist['service'] }}/{{ artist['id'] }}');"></div>
-                </a>
+                <div class="user-icon" data-user="{{ artist['user'] }}" data-service="{{ artist['service'] }}"></div>
               </td>
               <td>
-                <a href="/{{ artist['service'] }}/{{ 'server' if artist['service'] == 'discord' else 'user' }}/{{ artist['id'] }}">{{ artist['name'] }}</a>
+                <a href="/{{ artist['service'] }}/{{ 'server' if artist['service'] == 'discord' else 'user' }}/{{ artist['user'] }}">{{ artist['name'] }}</a>
+              </td>
+              <td>
+                <!-- TODO: Reimplement transliteration -->
+                <!-- <div>${transliterate(artist.name) !== artist.name ? transliterate(artist.name) : '<span class="subtitle">(N/A)</span>'}</div> -->
               </td>
               <td>
                 {{ {
@@ -42,21 +44,17 @@
                 }.get(artist['service'], '') }}
               </td>
               <td>
-                {{ artist['updated'] }}
+                {{ artist['max'] }}
               </td>
             </tr>
           {% endfor %}
-        </tbody>
-      </table>
-    {% endif %}
-    {% if results|length %}
-      <div class="paginator" id="paginator-bottom">
-        {% include 'components/paginator.html' %}
-      </div>
-    {% endif %}
+        {% endif %}
+      </tbody>
+    </table>
   </div>
   {% if results|length %}
     <script src="https://unpkg.com/unfetch@4.1.0/polyfill/index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <script src="{{ url_for('static', filename='js/artists.js') }}"></script>
   {% endif %}
 {% endblock %}

@@ -1,42 +1,59 @@
 {% extends 'components/shell.html' %}
 {% block content %}
-<div class="page" id="page">
-  {% if post %}
-    <div class="nav-links">
-      <ul>
-        <li>
-          <a class="prev" href="/{{ post.service }}/user/{{ post.user }}/post/{{ post.id }}/prev">‹ previous</a>
-          <a class="next" href="/{{ post.service }}/user/{{ post.user }}/post/{{ post.id }}/next">next ›</a>
-        </li>
-      </ul>
-    </div>
-    <div class="pure-g">
-      <div class="pure-u-1 pure-u-sm-1 pure-u-md-1-5">
-        <a href="/{{ post.service }}/user/{{ post.user }}">
-          <div class="jumbo">
-            <div class="jumbo-user">
-              <div class="jumbo-user-avatar" style="background-image: url('/icons/{{ post.service }}/{{ post.user }}');"></div>
-              <span>View all posts</span>
-            </div>
-          </div>
+<div class="views">
+  <div class="sidebar" style="margin-right: 20px;">
+    <span class="subtitle">Click on the thumbnails to reveal the original resolution image.</span>
+    <h1>Information</h1>
+    <div class="results" id="results"></div>
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/unfetch@4.1.0/polyfill/index.js"></script>
+    <script src="{{ url_for('static', filename='js/post.js') }}"></script>
+  </div>
+  <div class="page" id="page">
+    {% for post in results %}
+      {% set previews = result_previews[loop.index0] %}
+      {% set attachments = result_attachments[loop.index0] %}
+      {% if loop.index > 1 %}
+        <hr>
+      {% endif %}
+      {% if post.shared_file %}
+        <p class="subtitle">This post is user-shared, and cannot be verified for integrity. Exercise caution.</p>
+      {% endif %}
+      {% if post.service == 'dlsite' and post.attachments|length > 1 %}
+        <p class="subtitle">
+          This DLsite post was received as a split set of multiple files due to file size. Download all the files, then open the .exe file to compile them into a single one.
+        </p>
+      {% endif %}
+      {# title hidden with subscribestar posts to prevent redundancy #}
+      <h1>{{ post.title if post.service != 'subscribestar' }}</h1>
+      {% for attachment in attachments %}
+        <a href="{{ attachment.path }}" target="_blank">
+          Download {{ attachment.name }}
         </a>
-      </div>
-      <div class="pure-u-1 pure-u-sm-1 pure-u-md-4-5">
-        {% set flagged = result_flagged %}
-        {% set previews = result_previews %}
-        {% set attachments = result_attachments %}
-        {% set after_kitsune = result_after_kitsune %}
-        {% with post=post %}
-          {% include 'components/post_view.html' %}
-        {% endwith %}
-      </div>
-    </div>
-  {% else %}
-    <div class="no-posts">
-      <h1 class="subtitle">Nobody here but us chickens!</h1>
-    </div>
-  {% endif %}
+        <br>
+      {% endfor %}
+      <p>{{ post.content|safe }}</p>
+      {% for preview in previews %}
+        {% if preview.type == 'thumbnail' %}
+          <a class="fileThumb" href="{{ preview.path }}">
+            <img
+              data-src="/thumbnail{{ preview.path }}"
+              src="/thumbnail{{ preview.path }}"
+            >
+          </a>
+          <br>
+        {% elif preview.type == 'embed' %}
+          <a href="{{ preview.url }}" target="_blank">
+            <div class="embed-view">
+              {{ '<h3>'|safe ~ preview.subject ~ '</h3>'|safe if preview.subject else '<h3 class="subtitle">(No title)</h3>'|safe }}
+              {{ '<p>'|safe ~ preview.description ~ '</p>'|safe if preview.description }}
+            </div>
+          </a>
+          <br>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  </div>
 </div>
-<script src="{{ url_for('static', filename='js/post.js') }}"></script>
 <script src="{{ url_for('static', filename='js/expander.js') }}"></script>
 {% endblock %}
