@@ -1,3 +1,10 @@
+# client-side
+/client
+node_modules
+
+# VSCode workspace
+*.code-workspace
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
