@@ -1,7 +1,13 @@
 /* CSS variables */
 :root {
+  /* colors */
   --colour0-primary: hsl(0, 0%, 90%);
   --colour0-secondary: hsl(210, 6%, 12%);
+  --colour0-tertiary: hsl(0, 0%, 80%);
+  --colour0-quarternary: hsl(220, 7%, 17%);
+
+  /* widths */
+  --width-mobile: 360px;
 }
 /* END CSS variables */
 
@@ -24,6 +30,10 @@ html {
 *::after {
   box-sizing: inherit;
   margin: 0;
+}
+
+*:disabled {
+  cursor: not-allowed;
 }
 
 body {
@@ -64,6 +74,10 @@ button {
   padding: 0.5em;
 }
 
+legend {
+  padding: 0.5em;
+}
+
 label {
   cursor: pointer;
 }
@@ -73,6 +87,7 @@ select {
   color: var(--colour0-primary);
   background-image: linear-gradient(#282a2e, #111111);
   border-color: #111;
+  cursor: pointer;
 }
 
 select::-ms-expand {
@@ -93,6 +108,10 @@ textarea {
   background: #4c4f57;
 }
 
+button {
+  cursor: pointer;
+}
+
 /* END forms */
 
 a:visited {
@@ -105,11 +124,13 @@ a:link {
 
 /* END tag selectors */
 
+/* Attribute selectors */
+/* only attributes and their pseudo-classes/pseudo-elements go there */
+/* END Attribute selectors */
+
 .sidebar h1 {
   font-size: 1.16667em;
 }
-
-
 
 a {
   color: #87CEFA;
@@ -349,25 +370,46 @@ input[type="submit"] {
 /* search forms */
 
 .search-form {
-  display: table;
+  max-width: var(--width-mobile);
+  width: 100%;
+  background-color: var(--colour0-quarternary);
   margin: 0 0 1em;
-  padding: .5rem;
-  margin-left: 5px;
-  background-color: #282a2e;
+  padding: 0.5em;
 }
 
-.search-form > div {
-  display: table-row;
+.search-form__section {
   line-height: 1.5em;
-  margin-bottom: 2em;
+  padding-bottom: 0.5em;
 }
 
-.search-form small {
+.search-form__section:last-child {
+  padding-top: 0.5em;
+  padding-bottom: 0;
+}
+
+.search-form__advanced-section {
+  opacity: 1;
+  visibility: visible;
+  transition-property: opacity, visibility;
+  transition-duration: 250ms;
+}
+
+.search-form__advanced-section--hidden {
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
+  padding: 0;
+}
+
+.search-form__subtitle {
+  display: block;
   line-height: normal;
+  color: var(--colour0-tertiary);
+  padding-left: 0.5em;
 }
 
-.search-form label, .search-form input {
-  display: table-cell;
+.search-form label, 
+.search-form input {
   padding-right: 1em;
   white-space: nowrap;
   text-align: left;
@@ -378,9 +420,27 @@ input[type="submit"] {
   font-weight: 700;
 }
 
-.search-form small {
-  display: block;
+.search-form__advanced-button {
+  color: var(--colour0-primary);
+  background-image: linear-gradient(
+    hsl(220, 7%, 17%), 
+    hsl(0, 0%, 7%)
+  );
+  text-align: center;
+  border: 0;
 }
+
+.search-form__submit-button {
+  color: var(--colour0-primary);
+  background-image: linear-gradient(
+    hsl(0, 0%, 7%),
+    hsl(220, 7%, 17%)
+  );
+  text-align: center;
+  border: 0;
+}
+
+/* END search forms */
 
 /* search results */
 .search-results {
@@ -408,6 +468,7 @@ thead th {
   background-size: cover;
   background-position: center;
 }
+/* END search results */
 
 /* board */
 
