@@ -1,23 +1,60 @@
 {% extends 'components/shell.html' %}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/favorites.css') }}">
 <div class="page" id="page">
-  <table class="search-results" width="100%">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Service</th>
-      </tr>
-    </thead>
-    <tbody id="favorites-list">
-      <noscript>
+  <h3>Favorites</h3>
+  {% if source == 'session' %}
+    <table class="search-results" width="100%">
+      <thead>
         <tr>
-          <td class="subtitle">This feature requires Javascript.</td>
-          <td></td>
+          <th>Name</th>
+          <th>Service</th>
         </tr>
-      </noscript>
-    </tbody>
-  </table>
-</div>
-<script src="https://unpkg.com/unfetch@4.1.0/polyfill/index.js"></script>
-<script src="{{ url_for('static', filename='/js/favorites.js') }}"></script>
+      </thead>
+      <tbody id="favorites-list">
+        <noscript>
+          <tr>
+            <td class="subtitle">This feature requires Javascript.</td>
+            <td></td>
+          </tr>
+        </noscript>
+      </tbody>
+    </table>
+    <script src="https://unpkg.com/unfetch@4.1.0/polyfill/index.js"></script>
+  </div>
+  {% else %}
+    <div class="dropdowns">
+      <label>Type</label>
+      <select autocomplete="off" onchange="on_change_favorite_type(this)">
+        <option value="artist" {% if props.fave_type == "artist" %}selected="selected"{% endif %}>Artists</option>
+        <option value="post" {% if props.fave_type == "post" %}selected="selected"{% endif %}>Posts</option>
+      </select>
+
+      {% if props.fave_type == "artist" %}
+        <label>Sory by</label>
+        <select autocomplete="off" onchange="on_change_filters('sort', this)">
+          <option value="updated" {% if props.sort_field == "updated" %}selected="selected"{% endif %}>Last updated</option>
+          <option value="faved_seq" {% if props.sort_field == "faved_seq" %}selected="selected"{% endif %}>Faved date</option>
+        </select>
+      {% else %}
+        <label>Sory by</label>
+        <select autocomplete="off" onchange="on_change_filters('sort', this)">
+          <option value="faved_seq" {% if props.sort_field == "faved_seq" %}selected="selected"{% endif %}>Faved date</option>
+          <option value="published" {% if props.sort_field == "published" %}selected="selected"{% endif %}>Published</option>
+        </select>
+      {% endif %}
+
+      <label>Order</label>
+      <select autocomplete="off" onchange="on_change_filters('order', this)">
+        <option value="desc" {% if not props.sort_asc %}selected="selected"{% endif %}>Descending</option>
+        <option value="asc" {% if props.sort_asc %}selected="selected"{% endif %}>Ascending</option>
+      </select>
+    </div>
+    {% if props.fave_type == "artist" %}
+      {% include 'components/artist_list.html' %}
+    {% else %}
+      {% include 'components/post_list.html' %}
+    {% endif %}
+  {% endif %}
+  <script src="{{ url_for('static', filename='/js/favorites.js') }}"></script>
 {% endblock %}

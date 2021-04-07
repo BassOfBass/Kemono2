@@ -6,7 +6,6 @@
         <tr>
           <th width="50px">Icon</th>
           <th>Name</th>
-          <th>Transliteration</th>
           <th>Service</th>
           <th>Updated</th>
         </tr>
@@ -18,20 +17,17 @@
             <td class="subtitle">No artists found for your query.</td>
             <td></td>
             <td></td>
-            <td></td>
           </tr>
         {% else %}
           {% for artist in results %}
             <tr class="artist-row">
               <td>
-                <div class="user-icon" data-user="{{ artist['user'] }}" data-service="{{ artist['service'] }}"></div>
+                <a href="/{{ artist['service'] }}/{{ 'server' if artist['service'] == 'discord' else 'user' }}/{{ artist['user'] }}">
+                  <div class="user-icon" style="background-image: url('/icons/{{ artist['service'] }}/{{ artist['user'] }}');"></div>
+                </a>
               </td>
               <td>
                 <a href="/{{ artist['service'] }}/{{ 'server' if artist['service'] == 'discord' else 'user' }}/{{ artist['user'] }}">{{ artist['name'] }}</a>
-              </td>
-              <td>
-                <!-- TODO: Reimplement transliteration -->
-                <!-- <div>${transliterate(artist.name) !== artist.name ? transliterate(artist.name) : '<span class="subtitle">(N/A)</span>'}</div> -->
               </td>
               <td>
                 {{ {

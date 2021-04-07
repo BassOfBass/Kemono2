@@ -1,0 +1,60 @@
+<div class="vertical-views">
+    {% if results|length %}
+      <div class="paginator" id="paginator-top">
+        {% include 'components/paginator.html' %}
+      </div>
+    {% endif %}
+    <table class="search-results" width="100%">
+      <thead>
+        <tr>
+          <th width="50px">Icon</th>
+          <th>Name</th>
+          <th>Service</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if results|length == 0 %}
+          <tr>
+            <td></td>
+            <td class="subtitle">No artists found for your query.</td>
+            <td></td>
+          </tr>
+        {% else %}
+          {% for artist in results %}
+            <tr class="artist-row">
+              <td>
+                <a href="/{{ artist['service'] }}/{{ 'server' if artist['service'] == 'discord' else 'user' }}/{{ artist['id'] }}">
+                  <div class="user-icon" style="background-image: url('/icons/{{ artist['service'] }}/{{ artist['id'] }}');"></div>
+                </a>
+              </td>
+              <td>
+                <a href="/{{ artist['service'] }}/{{ 'server' if artist['service'] == 'discord' else 'user' }}/{{ artist['id'] }}">{{ artist['name'] }}</a>
+              </td>
+              <td>
+                {{ {
+                  'patreon': 'Patreon',
+                  'fanbox': 'Pixiv Fanbox',
+                  'subscribestar': 'SubscribeStar',
+                  'gumroad': 'Gumroad',
+                  'discord': 'Discord',
+                  'dlsite': 'DLsite'
+                }.get(artist['service'], '') }}
+              </td>
+
+              {% if artist['count'] %}
+              <td style="display:none">
+                  {{ artist['count'] }}
+              </td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+    {% if results|length %}
+      <div class="paginator" id="paginator-bottom">
+        {% include 'components/paginator.html' %}
+      </div>
+    {% endif %}
+  </div>
+</div>

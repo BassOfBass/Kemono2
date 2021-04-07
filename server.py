@@ -5,26 +5,28 @@ from shutil import move
 from dotenv import load_dotenv
 load_dotenv(join(dirname(__file__), '.env'))
 
-from routes.help import help_app
-from routes.proxy import proxy_app
+import src.internals.database.database as database
+import src.internals.cache.redis as redis
+from src.internals.cache.flask_cache import cache
+from src.lib.ab_test import get_all_variants
+from src.lib.account import is_logged_in
+from src.utils.utils import url_is_for_non_logged_file_extension
 
-from PIL import Image
-from flask import Flask, jsonify, render_template, render_template_string, request, redirect, url_for, send_from_directory, make_response, g, abort, current_app, send_file
-from flask_caching import Cache
-from werkzeug.utils import secure_filename
-from slugify import slugify_filename
-import requests
-from markupsafe import Markup
-from bleach.sanitizer import Cleaner
-import psycopg2
-from psycopg2 import pool
-from psycopg2.extras import RealDictCursor
-from hashlib import sha256
+from src.pages.home import home
+from src.pages.legacy import legacy
+from src.pages.artists import artists
+from src.pages.random import random
+from src.pages.post import post
+from src.pages.account import account
+from src.pages.favorites import favorites
+from src.pages.help import help_app
+from src.pages.proxy import proxy_app
 
 app = Flask(
     __name__,
     template_folder='views'
 )
+<<<<<<< HEAD
 app.config.from_pyfile('flask.cfg')
 cache = Cache(app)
 app.url_map.strict_slashes = False
@@ -42,11 +44,35 @@ try:
     )
 except Exception as error:
     print("Failed to connect to the database: ",error)
+=======
+
+app.url_map.strict_slashes = False
+
+app.register_blueprint(home)
+app.register_blueprint(legacy)
+app.register_blueprint(artists)
+app.register_blueprint(random)
+app.register_blueprint(post)
+app.register_blueprint(account)
+app.register_blueprint(favorites)
+app.register_blueprint(help_app, url_prefix='/help')
+app.register_blueprint(proxy_app, url_prefix='/proxy')
+
+app.config.from_pyfile('flask.cfg')
+app.jinja_env.globals.update(is_logged_in=is_logged_in)
+app.jinja_env.filters['regex_match'] = lambda val, rgx: re.search(rgx, val)
+app.jinja_env.filters['regex_find'] = lambda val, rgx: re.findall(rgx, val)
+
+logging.basicConfig(filename='kemono.log', level=logging.DEBUG)
+pil_logger = logging.getLogger('PIL')
+pil_logger.setLevel(logging.INFO)
+>>>>>>> root/master
 
 def make_cache_key(*args,**kwargs):
     return request.full_path
 
 @app.before_request
+<<<<<<< HEAD
 def clear_trailing():
     rp = request.path
     if rp != '/' and rp.endswith('/'):
@@ -62,6 +88,23 @@ def get_cursor():
 
 def allowed_file(mime, accepted):
     return any(x in mime for x in accepted)
+=======
+def do_init_stuff():
+    g.request_start_time = datetime.datetime.now()
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(days=9999)
+    session.modified = False
+
+@app.after_request
+def do_finish_stuff(response):
+    if not url_is_for_non_logged_file_extension(request.path):
+        start_time = g.request_start_time
+        end_time = datetime.datetime.now()
+        elapsed = end_time - start_time
+        app.logger.debug('[{4}] Completed {0} request to {1} in {2}ms with ab test variants: {3}'.format(request.method, request.url, elapsed.microseconds/1000, get_all_variants(), end_time.strftime("%Y-%m-%d %X")))
+    response.autocorrect_location_header = False
+    return response
+>>>>>>> root/master
 
 @app.errorhandler(413)
 def upload_exceeded(error):

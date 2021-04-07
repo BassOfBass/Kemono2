@@ -6,7 +6,6 @@ from ..internals.cache.flask_cache import cache
 home = Blueprint('home', __name__)
 
 @home.route('/')
-@cache.cached(key_prefix=make_cache_key)
 def get_home():
     props = {}
     base = request.args.to_dict()

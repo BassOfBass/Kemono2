@@ -32,6 +32,23 @@ html {
   margin: 0;
 }
 
+.flash_messages {
+  background-color: #3a3d43;
+  border-radius: 0.25rem;
+  padding: 10px;
+  text-align: center;
+}
+
+.sidebar h1 {
+  font-size: 1.16667em;
+}
+
+.main {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 90%;
+}
+
 *:disabled {
   cursor: not-allowed;
 }
@@ -240,6 +257,7 @@ a {
 
 
 input[type="text"], 
+input[type="password"], 
 input[type="number"] {
   border-radius: 5px;
   background: #4c4f57;
@@ -254,6 +272,14 @@ input[type="number"] {
   background-color: #282a2e;
   padding: 5px 20px 5px 15px;
   margin: 0 0 0.5em 0;
+}
+
+.subheader:empty {
+  display:none;
+}
+
+.sep {
+  height: 0.5em;
 }
 
 .subheader li {

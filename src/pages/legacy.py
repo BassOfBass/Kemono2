@@ -34,9 +34,7 @@ def thumbnail(path):
         image.thumbnail((800, 800))
         makedirs(dirname(join(getenv('DB_ROOT'), 'thumbnail', path)), exist_ok=True)
         image.save(join(getenv('DB_ROOT'), 'thumbnail', path), 'JPEG', quality=60)
-        response = redirect(join('/', 'thumbnail', path), code=302)
-        response.autocorrect_location_header = False
-        return response
+        return redirect(join('/', 'thumbnail', path), code=302)
     except Exception as e:
         return f"The file you requested could not be converted. Error: {e}", 404
 
@@ -47,125 +45,16 @@ def updated_artists():
     props = {
         'currentPage': 'artists'
     }
-
-    offset = int(request.args.get('o') or 0)
-    limit = 25
-
-    props['limit'] = limit
-
-    query = 'SELECT posts.user, service, max(added) FROM posts GROUP BY posts.user, service ORDER BY max(added) desc '
-    params = ()
-    query += "OFFSET %s "
-    params += (offset,)
-    query += "LIMIT 25"
-    cursor.execute(query, params)
-    posts_results = cursor.fetchall()
-
-    count_query = "SELECT posts.user, service, max(added) FROM posts GROUP BY posts.user, service"
-    count_cursor = get_cursor()
-    count_cursor.execute(count_query)
-    results2 = cursor.fetchall()
-    props["count"] = len(results2)
-
-    base = request.args.to_dict()
-    base.pop('o', None)
-
-    results = []
-    for post in posts_results:
-        cursor2 = get_cursor()
-        query2 = "SELECT * FROM lookup WHERE id = %s AND service = %s"
-        params2 = (post['user'], post['service'])
-        cursor2.execute(query2, params2)
-        user_result = cursor2.fetchone()
-        if not user_result:
-            continue
-        results.append({
-            "id": post['user'],
-            "name": user_result['name'],
-            "service": post['service'],
-            "updated": post['max']
-        })
-
+    query = 'WITH "posts" as (select "user", "service", max("added") from "posts" group by "user", "service" order by max(added) desc limit 50) '\
+        'select "user", "posts"."service" as service, "lookup"."name" as name, "max" from "posts" inner join "lookup" on "posts"."user" = "lookup"."id"'
+    cursor.execute(query)
+    results = cursor.fetchall()
     response = make_response(render_template(
         'updated.html',
         props = props,
-        results = results,
-        base = base
+        results = results
     ), 200)
-    response.headers['Cache-Control'] = 's-maxage=300'
-    return response
-
-@legacy.route('/artists/favorites')
-def favorites():
-    props = {
-        'currentPage': 'artists'
-    }
-
-    results = []
-    if session.get('favorites'):
-        for user in session['favorites']:
-            service = user.split(':')[0]
-            user_id = user.split(':')[1]
-
-            cursor = get_cursor()
-
-            if session.get('favorites_sort') == 'published' or not session or not session.get('favorites_sort'):
-                query = "SELECT * FROM posts WHERE \"user\" = %s AND service = %s ORDER BY published desc LIMIT 1"
-            elif session.get('favorites_sort') == 'added':
-                query = "SELECT * FROM posts WHERE \"user\" = %s AND service = %s ORDER BY added desc LIMIT 1"
-            params = (user_id, service)
-            cursor.execute(query, params)
-            latest_post = cursor.fetchone()
-
-            cursor2 = get_cursor()
-            query2 = "SELECT * FROM lookup WHERE id = %s AND service = %s"
-            params2 = (user_id, service)
-            cursor2.execute(query2, params2)
-            results2 = cursor2.fetchone()
-
-            if latest_post:
-                if latest_post.get('published') and (session.get('favorites_sort') == 'published' or not session or not session.get('favorites_sort')):
-                    results.append({
-                        "name": results2['name'] if results2 else "",
-                        "service": service,
-                        "user": user_id,
-                        "delta_date": (latest_post['published'] - datetime.now()).total_seconds(),
-                        "relative_date": relative_time(latest_post['published'])
-                    })
-                elif session.get('favorites_sort') == 'added':
-                    results.append({
-                        "name": results2['name'] if results2 else "",
-                        "service": service,
-                        "user": user_id,
-                        "delta_date": (latest_post['added'] - datetime.now()).total_seconds(),
-                        "relative_date": relative_time(latest_post['added'])
-                    })
-                else:
-                    results.append({
-                        "name": results2['name'] if results2 else "",
-                        "service": service,
-                        "user": user_id,
-                        "delta_date": 99999999,
-                        "error_msg": "Service unsupported."
-                    })
-            else:
-                results.append({
-                    "name": results2['name'] if results2 else "",
-                    "service": service,
-                    "user": user_id,
-                    "delta_date": 99999999,
-                    "error_msg": "Never imported."
-                })
-    
-    props['phrase'] = "Last posted" if session.get('favorites_sort') == 'published' or not session.get('favorites_sort') else "Last imported"
-    results.sort(key=delta_key, reverse=True)
-    response = make_response(render_template(
-        'favorites.html',
-        props = props,
-        results = results,
-        session = session
-    ), 200)
-    response.headers['Cache-Control'] = 'no-store, max-age=0'
+    response.headers['Cache-Control'] = 'max-age=60, public, stale-while-revalidate=2592000'
     return response
 
 @legacy.route('/artists/blocked')
@@ -335,32 +224,6 @@ def upload_post():
 
 # TODO: /:service/user/:id/rss
 
-@legacy.route('/config/set', methods=["POST"])
-def config_set():
-    for key in request.form.keys():
-        session[key] = request.form[key]
-    response = redirect(request.headers.get('Referer') if request.headers.get('Referer') else '/')
-    response.autocorrect_location_header = False
-    return response
-
-@legacy.route('/config/add', methods=["POST"])
-def config_add():
-    for key in request.form.keys():
-        session[key] = session[key] + [request.form[key]] if session.get(key) and isinstance(session[key], list) else [request.form[key]]
-    response = redirect(request.headers.get('Referer') if request.headers.get('Referer') else '/')
-    response.autocorrect_location_header = False
-    return response
-
-@legacy.route('/config/remove', methods=["POST"])
-def config_remove():
-    for key in request.form.keys():
-        if session.get(key) and isinstance(session[key], list):
-            session[key].remove(request.form[key])
-    session.modified = True
-    response = redirect(request.headers.get('Referer') if request.headers.get('Referer') else '/')
-    response.autocorrect_location_header = False
-    return response
-
 @legacy.route('/<service>/user/<id>/rss')
 def user_rss(service, id):
     cursor = get_cursor()
@@ -417,7 +280,7 @@ def board():
         'board_list.html',
         props = props
     ), 200)
-    response.headers['Cache-Control'] = 's-maxage=60'
+    response.headers['Cache-Control'] = 'max-age=60, public, stale-while-revalidate=2592000'
     return response
 
 @legacy.route('/requests')
@@ -427,9 +290,6 @@ def requests_list():
     }
     base = request.args.to_dict()
     base.pop('o', None)
-    limit = 25
-
-    props['limit'] = limit
 
     if not request.args.get('commit'):
         query = "SELECT * FROM requests "
@@ -439,13 +299,6 @@ def requests_list():
         offset = request.args.get('o') if request.args.get('o') else 0
         params = (offset,)
         query += "LIMIT 25"
-
-        cursor2 = get_cursor()
-        query2 = "SELECT COUNT(*) FROM requests "
-        query2 += "WHERE status = 'open'"
-        cursor2.execute(query2)
-        results2 = cursor2.fetchall()
-        props["count"] = int(results2[0]["count"])
     else:
         query = "SELECT * FROM requests "
         query += "WHERE title ILIKE %s "
@@ -473,23 +326,6 @@ def requests_list():
         params += (offset,)
         query += "LIMIT 25"
 
-        cursor2 = get_cursor()
-        query2 = "SELECT COUNT(*) FROM requests "
-        query2 += "WHERE title ILIKE %s "
-        params2 = ('%' + request.args.get('q') + '%',)
-        if request.args.get('service'):
-            query2 += "AND service = %s "
-            params2 += (request.args.get('service'),)
-        query2 += "AND service != 'discord' "
-        if request.args.get('max_price'):
-            query2 += "AND price <= %s "
-            params2 += (request.args.get('max_price'),)
-        query2 += "AND status = %s"
-        params2 += (request.args.get('status'),)
-        cursor2.execute(query2, params2)
-        results2 = cursor2.fetchall()
-        props["count"] = int(results2[0]["count"])
-
     cursor = get_cursor()
     cursor.execute(query, params)
     results = cursor.fetchall()
@@ -514,7 +350,7 @@ def vote_up(id):
 
     props = {
         'currentPage': 'requests',
-        'redirect': request.headers.get('Referer') if request.headers.get('Referer') else '/requests'
+        'redirect': request.args.get('Referer') if request.args.get('Referer') else '/requests'
     }
 
     if not len(result):
@@ -551,14 +387,14 @@ def request_form():
         'requests_new.html',
         props = props
     ), 200)
-    response.headers['Cache-Control'] = 's-maxage=60'
+    response.headers['Cache-Control'] = 'max-age=60, public, stale-while-revalidate=2592000'
     return response
 
 @legacy.route('/requests/new', methods=['POST'])
 def request_submit():
     props = {
         'currentPage': 'requests',
-        'redirect': request.headers.get('Referer') if request.headers.get('Referer') else '/requests'
+        'redirect': request.args.get('Referer') if request.args.get('Referer') else '/requests'
     }
 
     ip = request.headers.getlist("X-Forwarded-For")[0].rpartition(' ')[-1] if 'X-Forwarded-For' in request.headers else request.remote_addr
@@ -654,7 +490,7 @@ def importer():
         'importer_list.html',
         props = props
     ), 200)
-    response.headers['Cache-Control'] = 's-maxage=60'
+    response.headers['Cache-Control'] = 'max-age=60, public, stale-while-revalidate=2592000'
     return response
 
 @legacy.route('/importer/tutorial')
@@ -667,7 +503,7 @@ def importer_tutorial():
         'importer_tutorial.html',
         props = props
     ), 200)
-    response.headers['Cache-Control'] = 's-maxage=60'
+    response.headers['Cache-Control'] = 'max-age=60, public, stale-while-revalidate=2592000'
     return response
 
 @legacy.route('/importer/ok')
@@ -680,7 +516,7 @@ def importer_ok():
         'importer_ok.html',
         props = props
     ), 200)
-    response.headers['Cache-Control'] = 's-maxage=60'
+    response.headers['Cache-Control'] = 'max-age=60, public, stale-while-revalidate=2592000'
     return response
 
 @legacy.route('/importer/status/<lgid>')
@@ -708,79 +544,6 @@ def importer_status(lgid):
     return response
 
 ### API ###
-@legacy.route('/api/upload', methods=['POST'])
-def upload_file():
-    resumable_dict = {
-        'resumableIdentifier': request.form.get('resumableIdentifier'),
-        'resumableFilename': request.form.get('resumableFilename'),
-        'resumableTotalSize': request.form.get('resumableTotalSize'),
-        'resumableTotalChunks': request.form.get('resumableTotalChunks'),
-        'resumableChunkNumber': request.form.get('resumableChunkNumber')
-    }
-
-    if int(request.form.get('resumableTotalSize')) > int(getenv('UPLOAD_LIMIT')):
-        return "File too large.", 415
-
-    makedirs(join(getenv('DB_ROOT'), 'uploads'), exist_ok=True)
-    makedirs(join(getenv('DB_ROOT'), 'uploads', 'temp'), exist_ok=True)
-
-    resumable = UploaderFlask(
-        resumable_dict,
-        join(getenv('DB_ROOT'), 'uploads'),
-        join(getenv('DB_ROOT'), 'uploads', 'temp'),
-        request.files['file']
-    )
-
-    resumable.upload_chunk()
-
-    if resumable.check_status() is True:
-        resumable.assemble_chunks()
-        resumable.cleanup()
-
-        scrub = Cleaner(tags = [])
-        text = Cleaner(tags = ['br'])
-
-        post_model = {
-            'id': ''.join(random.choice(string.ascii_letters) for x in range(8)),
-            '"user"': scrub.clean(request.form.get('user')),
-            'service': scrub.clean(request.form.get('service')),
-            'title': scrub.clean(request.form.get('title')),
-            'content': text.clean(request.form.get('content')) or "",
-            'embed': {},
-            'shared_file': True,
-            'added': datetime.now(),
-            'published': datetime.now(),
-            'edited': None,
-            'file': {
-                "name": scrub.clean(request.form.get('resumableFilename')),
-                "path": f"/uploads/{request.form.get('resumableFilename')}"
-            },
-            'attachments': []
-        }
-
-        post_model['embed'] = json.dumps(post_model['embed'])
-        post_model['file'] = json.dumps(post_model['file'])
-        
-        columns = post_model.keys()
-        data = ['%s'] * len(post_model.values())
-        data[-1] = '%s::jsonb[]' # attachments
-        query = "INSERT INTO posts ({fields}) VALUES ({values})".format(
-            fields = ','.join(columns),
-            values = ','.join(data)
-        )
-        cursor = get_cursor()
-        cursor.execute(query, list(post_model.values()))
-        
-        return jsonify({
-            "fileUploadStatus": True,
-            "resumableIdentifier": resumable.repo.file_id
-        })
-
-    return jsonify({
-        "chunkUploadStatus": True,
-        "resumableIdentifier": resumable.repo.file_id
-    })
-
 @legacy.route('/api/import', methods=['POST'])
 def importer_submit():
     host = getenv('ARCHIVERHOST')
@@ -812,7 +575,7 @@ def importer_submit():
         ), 200)
     except Exception as e:
         return f'Error while connecting to archiver. Is it running? Error: {e}', 500
-    
+
 # TODO: file sharing api (/api/upload)
 
 @legacy.route('/api/bans')
@@ -840,7 +603,7 @@ def recent():
     results = cursor.fetchall()
 
     response = make_response(jsonify(results), 200)
-    response.headers['Cache-Control'] = 's-maxage=60'
+    response.headers['Cache-Control'] = 'max-age=60, public, stale-while-revalidate=2592000'
     return response
 
 @legacy.route('/api/lookup')
@@ -958,7 +721,7 @@ def new_flag_api(service, user, post):
     results = cursor.fetchall()
     if len(results) == 0:
         return "", 404
-    
+
     cursor2 = get_cursor()
     query2 = "SELECT * FROM booru_flags WHERE id = %s AND \"user\" = %s AND service = %s"
     params2 = (post, user, service)
@@ -967,7 +730,7 @@ def new_flag_api(service, user, post):
     if len(results2) > 0:
         # conflict; flag already exists
         return "", 409
-    
+
     scrub = Cleaner(tags = [])
     columns = ['id','"user"','service']
     params = (

@@ -7,6 +7,9 @@ from ..utils.utils import make_cache_key
 from ..internals.cache.flask_cache import cache
 from ..internals.database.database import get_cursor
 from ..lib.post import get_post, is_post_flagged, get_next_post_id, get_previous_post_id
+from ..lib.artist import get_artist
+from ..lib.favorites import is_post_favorited
+from ..lib.account import load_account
 
 post = Blueprint('post', __name__)
 
@@ -19,12 +22,9 @@ def post_prev(service, user_id, post_id):
         previous_post = get_post(previous_post_id, user_id, service)
 
     if not previous_post:
-        response = redirect(request.headers.get('Referer') if request.headers.get('Referer') else '/')
+        return redirect(request.headers.get('Referer') if request.headers.get('Referer') else '/')
     else:
-        response = redirect(url_for('post.get', service = previous_post['service'], user_id = previous_post['user'], post_id = previous_post['id']))
-        response.autocorrect_location_header = False
-
-    return response
+        return redirect(url_for('post.get', service = previous_post['service'], artist_id = previous_post['user'], post_id = previous_post['id']))
 
 @post.route('/<service>/user/<user_id>/post/<post_id>/next')
 def post_next(service, user_id, post_id):
@@ -35,34 +35,30 @@ def post_next(service, user_id, post_id):
         next_post = get_post(next_post_id, user_id, service)
 
     if not next_post:
-        response = redirect(request.headers.get('Referer') if request.headers.get('Referer') else '/')
+        return redirect(request.headers.get('Referer') if request.headers.get('Referer') else '/')
     else:
-        response = redirect(url_for('post.get', service = next_post['service'], user_id = next_post['user'], post_id = next_post['id']))
-        response.autocorrect_location_header = False
+        return redirect(url_for('post.get', service = next_post['service'], artist_id = next_post['user'], post_id = next_post['id']))
 
-    return response
-
-@post.route('/<service>/user/<user_id>/post/<post_id>')
-def get(service, user_id, post_id):
+@post.route('/<service>/user/<artist_id>/post/<post_id>')
+def get(service, artist_id, post_id):
     cursor = get_cursor()
     props = {
         'currentPage': 'posts',
         'service': service if service else 'patreon'
     }
 
-    post = get_post(post_id, user_id, service)
+    post = get_post(post_id, artist_id, service)
     if post is None:
-        response = redirect(url_for('artists.get', service = service, id = user_id))
-        response.autocorrect_location_header = False
+        response = redirect(url_for('artists.get', service = service, artist_id = artist_id))
         return response
 
-    result_previews = None
-    result_attachments = None
-    result_flagged = None
-    result_after_kitsune = False
+    favorited = False
+    account = load_account()
+    if account is not None:
+        favorited = is_post_favorited(account['id'], service, artist_id, post_id)
 
-    if post['added'] > datetime.datetime(2020, 12, 22, 0, 0, 0, 0):
-        result_after_kitsune = True
+    artist = get_artist(service, artist_id)
+
     previews = []
     attachments = []
     if len(post['file']):
@@ -95,18 +91,16 @@ def get(service, user_id, post_id):
                 'name': attachment['name']
             })
 
-    result_flagged = is_post_flagged(post_id, user_id, service)
-    result_previews = previews
-    result_attachments = attachments
-    
+    props['artist'] = artist
+    props['flagged'] = is_post_flagged(service, artist_id, post_id)
+    props['favorited'] = favorited
+    props['after_kitsune'] = post['added'] > datetime.datetime(2020, 12, 22, 0, 0, 0, 0)
     response = make_response(render_template(
         'post.html',
         props = props,
         post = post,
-        result_previews = result_previews,
-        result_attachments = result_attachments,
-        result_flagged = result_flagged,
-        result_after_kitsune = result_after_kitsune
+        result_previews = previews,
+        result_attachments = attachments,
     ), 200)
     response.headers['Cache-Control'] = 's-maxage=60'
     return response

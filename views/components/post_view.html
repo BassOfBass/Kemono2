@@ -17,10 +17,15 @@
 {% if post.published %}
   <label for="toggle-{{ post.id }}" class="subtitle">{{ post.published }}</label>
 {% endif %}
-{% if flagged %}
+{% if props.flagged %}
   <span class="flag-disabled" title="This post has been flagged.">⚑</span>
 {% else %}
   <span class="flag" title="Flag post" id="flag-button" data-service="{{ post.service }}" data-user="{{ post.user }}" data-post="{{ post.id }}">⚑</span>
+{% endif %}
+{% if props.favorited %}
+  <a href="javascript:unfavorite_post('{{ post.service }}', '{{ post.user }}', '{{ post.id }}');"><span style="color: #FFD700;">★</span></a>
+{% else %}
+  <a href="javascript:favorite_post('{{ post.service }}', '{{ post.user }}', '{{ post.id }}');">☆</a>
 {% endif %}
 <br>
 {% for attachment in attachments %}

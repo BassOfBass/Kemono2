@@ -1,27 +1,20 @@
-<ul class="subheader">
-  {% if props.currentPage == 'posts' %}
-    <li><a href="/posts">List</a></li>
-    <li><a href="/posts/random">Random</a></li>
-    <li><a href="/help/posts">Help</a></li>
+{% if props.currentPage == 'artists' %}
+  <ul class="subheader">
+    <li><a href="/artists">[Artist List]</a></li>
+    <li><a href="/artists/random">[Random Artist]</a></li>
+  </ul>
+{% endif %}
+{% if props.currentPage == 'requests' %}
+  <ul class="subheader">
+    <li><a href="/requests">[Request List]</a></li>
+    <li><a href="/requests/new">[Post New Request]</a></li>
+  </ul>
+{% endif %}
+{#
+  {% if request.endpoint == 'user' %}
+    <ul class="subheader">
+      <li><a href="/posts/upload?service={{ props.service }}&user={{ props.id }}">[Upload file]</a></li>
+      <li><a href="{{ request.path }}/rss">[RSS]</a></li>
+    </ul>
   {% endif %}
-  {% if props.currentPage == 'artists' %}
-    <li><a href="/">List</a></li>
-    <li><a href="/artists/random">Random</a></li>
-    <li><a href="/artists/updated">Recently Updated</a></li>
-    <li><a href="/artists/favorites">Favorites</a></li>
-  {% endif %}
-  {% if props.currentPage == 'requests' %}
-    <li><a href="/requests">List</a></li>
-    <li><a href="/requests/new">New</a></li>
-  {% endif %}
-  {% if props.currentPage == 'import' %}
-    <li><a href="">List</a></li>
-  {% endif %}
-  {% if props.currentPage == 'help' %}
-    <li><a href="">List</a></li>
-  {% endif %}
-  {% if props.currentPage == 'board' %}
-    <li><a href="/board">List</a></li>
-    {# <li><a href="/board/new">New</a></li> #}
-  {% endif %}
-</ul>
+#}

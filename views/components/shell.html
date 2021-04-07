@@ -3,10 +3,11 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Kemono</title>
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css@8.0.1/normalize.css">
-    <!-- TODO: Replace push notifications with Python library -->
-    <!--<meta name="push_key" content="${process.env.VAPID_PUBLIC_KEY}"/>-->
+    <title>{{ props.name ~ " | Kemono" if props.name else "Kemono" }}</title>
+    <link rel="shortcut icon" href="/static/favicon.ico"/>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.5/build/base-min.css">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.5/build/grids-min.css">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.5/build/grids-responsive-min.css">
     {% if props.compatibility %}
       <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/compatibility.css') }}">
     {% else %}
@@ -31,22 +32,14 @@
       <meta name="added" content="{{ props.posts.added }}"/>
       <meta name="id" content="{{ props.posts.id }}"/>
     {% endif %}
+    <script src="{{ url_for('static', filename='js/global.js') }}"></script>
   </head>
   <body>
-    <header class="global-header">
-      <nav class="global-nav">
-        <ul class="header">
-          <li {{ 'class="current-page"'|safe if props.currentPage == 'artists' }}><a href="/">Artists</a></li>
-          <li {{ 'class="current-page"'|safe if props.currentPage == 'posts' }}><a href="/posts">Posts</a></li>
-          <li {{ 'class="current-page"'|safe if props.currentPage == 'import' }}><a href="/importer">Import</a></li>
-          <li {{ 'class="current-page"'|safe if props.currentPage == 'requests' }}><a href="/requests">Requests</a></li>
-          <li><a href="https://board.kemono.party/kemono" target="_blank">Board</a></li>
-          <li {{ 'class="current-page"'|safe if props.currentPage == 'help' }}><a href="/help">Help</a></li>
-        </ul>
-        {% include 'components/subheader.html' %}
-      </nav>
-    </header>
-    <main class="main" id="main">
+    <div class="main" id="main">
+      {% include 'components/header.html' %}
+      {% include 'components/subheader.html' %}
+      {% include 'components/flash_messages.html' %}
+      <div class="sep"></div>
       {% block content %}{% endblock %}
     </div>
   </body>
