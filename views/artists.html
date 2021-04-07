@@ -2,7 +2,7 @@
 {% block content %}
   <div class="page" id="page">
     <form
-      class="artist-search-form"
+      class="search-form"
       autocomplete="off"
       novalidate="novalidate"
       action="{{ url_for('artists.list') }}"
@@ -10,7 +10,7 @@
       method="get"
       onsubmit="return (typeof submitted == 'undefined') ? (submitted = true) : !submitted"
     >
-      <div class="artist-search-form__section">
+      <div class="search-form__section">
         <label for="q">Name</label>
         <input
           type="text"
@@ -19,35 +19,117 @@
           autocomplete="off"
           value="{{ request.args.get('q') if request.args.get('q') }}"
         >
-        <small class="artist-search-form__subtitle">Leave blank to list all</small>
+        <small class="search-form__subtitle">Leave blank to list all</small>
       </div>
-      <div class="artist-search-form__section">
+      <div class="search-form__section">
         <button 
           type="button" 
-          class="artist-search-form__advanced-button"
+          class="search-form__advanced-button"
         >
           Advanced options
         </button>
       </div>
-      <div>
-        <label for="sort_by">Sort by</label>
-        <select id="sort_by" name="sort_by">
-          <option value="indexed" {{ 'selected' if request.args.get('sort_by') == 'indexed' }}>Date Indexed</option>
-          <option value="name" {{ 'selected' if request.args.get('sort_by') == 'name' }}>Alphabetical Order</option>
-          <option value="service" {{ 'selected' if request.args.get('sort_by') == 'service' }}>Service</option>
-        </select>
-        <select name="order">
-          <option value="desc" {{ 'selected' if request.args.get('order') == 'desc'}}>Descending</option>
-          <option value="asc">Ascending</option>
-        </select>
+      <fieldset 
+        class="search-form__advanced-section search-form__advanced-section--hidden"
+      >
+        <div class="search-form__section">
+          <label for="service">Service</label>
+          <select id="service" name="service">
+            <option value="">All</option>
+            <option value="patreon" {{ 'selected' if request.args.get('service') == 'patreon' }}>Patreon</option>
+            <option value="fanbox" {{ 'selected' if request.args.get('service') == 'fanbox' }}>Pixiv Fanbox</option>
+            <option value="gumroad" {{ 'selected' if request.args.get('service') == 'gumroad' }}>Gumroad</option>
+            <option value="subscribestar" {{ 'selected' if request.args.get('service') == 'subscribestar' }}>SubscribeStar</option>
+            <option value="discord" {{ 'selected' if request.args.get('service') == 'discord' }}>Discord</option>
+            <option value="dlsite" {{ 'selected' if request.args.get('service') == 'dlsite' }}>DLsite</option>
+          </select>
+        </div>
+        <div class="search-form__section">
+          <label for="sort_by">Sort by</label>
+          <select id="sort_by" name="sort_by">
+            <option value="indexed" {{ 'selected' if request.args.get('sort_by') == 'indexed' }}>Date Indexed</option>
+            <option value="name" {{ 'selected' if request.args.get('sort_by') == 'name' }}>Alphabetical Order</option>
+            <option value="service" {{ 'selected' if request.args.get('sort_by') == 'service' }}>Service</option>
+          </select>
+        </div>
+        <div class="search-form__section">
+          <label for="sort_order">Order</label>
+          <select id="sort_order" name="order">
+            <option value="asc">Ascending</option>
+            <option value="desc" {{ 'selected' if request.args.get('order') == 'desc'}}>Descending</option>
+          </select>
+        </div>
+      </fieldset>
+      <div class="search-form__section">
+        <button
+          class="search-form__submit-button"
+          type="submit" 
+          name="commit" 
+          data-disable-with="Search"
+        >
+          Search
+        </button>
       </div>
     </form>
-    {% if props['display'] %}
-      <div style="text-align: center;">
-        <h3 class="subtitle">Displaying {{ props['display'] }}</h3>
-      </div>
-    {% endif %}
-    {% include 'components/artist_list.html' %}
+    <div class="vertical-views">
+      {% if results|length %}
+        <div class="paginator" id="paginator-top">
+          {% include 'components/paginator.html' %}
+        </div>
+      {% endif %}
+      <table class="search-results" width="100%">
+        <thead>
+          <tr>
+            <th width="50px">Icon</th>
+            <th>Name</th>
+            <th>Transliteration</th>
+            <th>Service</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if results|length == 0 %}
+            <tr>
+              <td></td>
+              <td class="subtitle">No artists found for your query.</td>
+              <td></td>
+              <td></td>
+            </tr>
+          {% else %}
+            {% for artist in results %}
+              <tr class="artist-row">
+                <td>
+                  <div class="user-icon" data-user="{{ artist['id'] }}" data-service="{{ artist['service'] }}"></div>
+                </td>
+                <td>
+                  <a href="/{{ artist['service'] }}/{{ 'server' if artist['service'] == 'discord' else 'user' }}/{{ artist['id'] }}">{{ artist['name'] }}</a>
+                </td>
+                <td>
+                  <!-- TODO: Reimplemnt transliteration -->
+                  <div><!--${transliterate(artist[1]) !== artist[1] ? transliterate(artist[1]) : '<span class="subtitle">(N/A)</span>'}--></div>
+                </td>
+                <td>
+                  {{ {
+                    'patreon': 'Patreon',
+                    'fanbox': 'Pixiv Fanbox',
+                    'subscribestar': 'SubscribeStar',
+                    'gumroad': 'Gumroad',
+                    'discord': 'Discord',
+                    'dlsite': 'DLsite'
+                  }.get(artist['service'], '') }}
+                </td>
+              </tr>
+            {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+      {% if results|length %}
+        <div class="paginator" id="paginator-bottom">
+          {% include 'components/paginator.html' %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/search-form.js') }}"></script>
   {% if results|length %}
     <script src="https://unpkg.com/unfetch@4.1.0/polyfill/index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>

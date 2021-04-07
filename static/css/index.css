@@ -32,23 +32,6 @@ html {
   margin: 0;
 }
 
-.flash_messages {
-  background-color: #3a3d43;
-  border-radius: 0.25rem;
-  padding: 10px;
-  text-align: center;
-}
-
-.sidebar h1 {
-  font-size: 1.16667em;
-}
-
-.main {
-  margin: 0 auto;
-  max-width: 1280px;
-  width: 90%;
-}
-
 *:disabled {
   cursor: not-allowed;
 }
@@ -395,7 +378,7 @@ input[type="submit"] {
 
 /* artist search form */
 
-.artist-search-form {
+.search-form {
   max-width: var(--width-mobile);
   width: 100%;
   background-color: var(--colour0-quarternary);
@@ -403,39 +386,39 @@ input[type="submit"] {
   padding: 0.5em;
 }
 
-.artist-search-form__section {
+.search-form__section {
   line-height: 1.5em;
   padding-bottom: 0.5em;
 }
 
-.artist-search-form__section:last-child {
+.search-form__section:last-child {
   padding-top: 0.5em;
   padding-bottom: 0;
 }
 
-.artist-search-form__advanced-section {
+.search-form__advanced-section {
   opacity: 1;
   visibility: visible;
   transition-property: opacity, visibility;
   transition-duration: 250ms;
 }
 
-.artist-search-form__advanced-section--hidden {
+.search-form__advanced-section--hidden {
   opacity: 0;
   visibility: hidden;
   max-height: 0;
   padding: 0;
 }
 
-.artist-search-form__subtitle {
+.search-form__subtitle {
   display: block;
   line-height: normal;
   color: var(--colour0-tertiary);
   padding-left: 0.5em;
 }
 
-.artist-search-form label, 
-.artist-search-form input {
+.search-form label, 
+.search-form input {
   padding-right: 1em;
   white-space: nowrap;
   text-align: left;
@@ -446,7 +429,7 @@ input[type="submit"] {
   font-weight: 700;
 }
 
-.artist-search-form__advanced-button {
+.search-form__advanced-button {
   color: var(--colour0-primary);
   background-image: linear-gradient(
     hsl(220, 7%, 17%), 
@@ -456,7 +439,7 @@ input[type="submit"] {
   border: 0;
 }
 
-.artist-search-form__submit-button {
+.search-form__submit-button {
   color: var(--colour0-primary);
   background-image: linear-gradient(
     hsl(0, 0%, 7%),
@@ -466,9 +449,6 @@ input[type="submit"] {
   border: 0;
 }
 
-/* END artist search form */
-
-/* search forms */
 /* END search forms */
 
 /* search results */
