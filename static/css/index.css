@@ -724,6 +724,10 @@ thead th {
   text-align: center;
 }
 
+.site-section__filters {
+  
+}
+
 .form {
   max-width: 360px;
   padding: 1em;
