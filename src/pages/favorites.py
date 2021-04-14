@@ -2,7 +2,7 @@ from flask import Blueprint, request, make_response, render_template, session, r
 
 from ..utils.utils import make_cache_key, get_value, restrict_value, sort_dict_list_by, take, offset, parse_int
 from ..lib.account import load_account
-from ..lib.favorites import get_favorite_artists, get_favorite_posts, add_favorite_post, add_favorite_artist, remove_favorite_post, remove_favorite_artist
+from ..lib.favorites import get_favorite_artists, get_favorite_posts, add_favorite_post, add_favorite_artist, remove_favorite_post, remove_favorite_artist, consume_search_query
 from ..lib.security import is_password_compromised
 from ..internals.cache.flask_cache import cache
 
@@ -44,6 +44,8 @@ def list():
         base = base,
         source = 'account',
         results = results,
+        construct_query = consume_search_query(base)['construct_query'],
+        check_selected = consume_search_query(base)['check_selected']
     ), 200)
     response.headers['Cache-Control'] = 's-maxage=60'
     return response

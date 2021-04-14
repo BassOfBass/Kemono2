@@ -2,51 +2,79 @@
 
 {% block content %}
 <section class="page site-section site-section--favorites" id="page">
-  <h1>Favorites</h1>
-  <div>
-    <h2>Filters</h2>
-    <ul class="site-section__filters">
-      <li>
-        <p>Type</p>
+  <h1 class="site-section__heading">Favorites</h1>
+  <div class="site-section__filters">
+    <h2 class="site-section__subheading">Filters</h2>
+    <ul class="filter-list">
+      <li class="filter-list__filter">
+        <p>Type:</p>
         <ul>
-          <li>
-            <a href="/favorites?type=artist">Artists</a>
+          <li class="filter-list__item">
+            <a 
+              class="filter-list__link {{ 'filter-list__link--selected' if check_selected('type', 'artist') }}" 
+              href="/favorites?type=artist"
+            >Artists</a>
           </li>
-          <li>
-            <a href="/favorites?type=post">Posts</a>
+          <li class="filter-list__item">
+            <a 
+              class="filter-list__link {{ 'filter-list__link--selected' if check_selected('type', 'post') }}" 
+              href="/favorites?type=post"
+            >Posts</a>
           </li>
         </ul>
       </li>
       {% if props.fave_type == "artist" %}
-        <li>
-          <p>Sort by</p>
+        <li class="filter-list__filter">
+          <p>Sort by:</p>
           <ul>
-            <li>
-              <a href="/favorites?type=artist&sort=updated">Last updated</a>
+            <li class="filter-list__item">
+              <a 
+                class="filter-list__link {{ 'filter-list__link--selected' if check_selected('sort', 'updated') }}" 
+                href="{{ construct_query('sort', 'updated') }}"
+              >Last updated</a>
             </li>
-            <li>
-              <a href="/favorites?type=artist&sort=faved_seq">Faved date</a>
+            <li class="filter-list__item">
+              <a 
+                class="filter-list__link {{ 'filter-list__link--selected' if check_selected('sort', 'faved_seq') }}" 
+                href="{{ construct_query('sort', 'faved_seq') }}"
+              >Faved date</a>
             </li>
           </ul>
         </li>
       {% else %}
-        <li>
-          <p>Sort by</p>
+        <li class="filter-list__filter">
+          <p>Sort by:</p>
           <ul>
-            <li>
-              <a href="/favorites?type=post&sort=faved_seq">Faved date</a>
+            <li class="filter-list__item">
+              <a 
+                class="filter-list__link {{ 'filter-list__link--selected' if check_selected('sort', 'faved_seq') }}" 
+                href="{{ construct_query('sort', 'faved_seq') }}"
+              >Faved date</a>
             </li>
-            <li>
-              <a href="/favorites?type=post&sort=published">Published</a>
+            <li class="filter-list__item">
+              <a 
+                class="filter-list__link {{ 'filter-list__link--selected' if check_selected('sort', 'published') }}" 
+                href="{{ construct_query('sort', 'published') }}"
+              >Published</a>
             </li>
           </ul>
         </li>
       {% endif %} 
-      <li>
-        <p>Order</p>
+      <li class="filter-list__filter">
+        <p>Order:</p>
         <ul>
-          <li><a href="/favorites?order=desc">Descending</a></li>
-          <li><a href="/favorites?order=asc">Ascending</a></li>
+          <li class="filter-list__item">
+            <a 
+              class="filter-list__link {{ 'filter-list__link--selected' if check_selected('order', 'desc') }}" 
+              href="{{ construct_query('order', 'desc') }}"
+            >Descending</a>
+          </li>
+          <li class="filter-list__item">
+            <a 
+              class="filter-list__link {{ 'filter-list__link--selected' if check_selected('order', 'asc') }}" 
+              href="{{ construct_query('order', 'asc') }}"
+            >Ascending</a>
+          </li>
         </ul>
       </li> 
     </ul>

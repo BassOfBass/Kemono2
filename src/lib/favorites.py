@@ -109,3 +109,27 @@ def remove_favorite_post(account_id, service, artist_id, post_id):
     cursor.execute(query, (account_id, service, artist_id, post_id))
     get_favorite_posts(account_id, True)
     is_post_favorited(account_id, service, artist_id, post_id, True)
+
+def consume_search_query(dictionary):
+    def construct_query(incoming_key, incoming_value, query_dict=dictionary):
+        string = '/favorites?'
+        for key, value in query_dict.items():
+            if key == incoming_key:
+                string += f"{key}={incoming_value}&"
+            else:
+                string += f"{key}={value}&"
+        if incoming_key not in query_dict:
+            string += f"{incoming_key}={incoming_value}"
+        if string.endswith('&'):
+            string = string.rstrip('&')
+        return string
+    def check_selected(incoming_key, incoming_value, query_dict=dictionary):
+        if incoming_key in query_dict and incoming_value == query_dict[incoming_key]:
+            return True
+        return False
+
+    return dict(
+        construct_query = construct_query,
+        check_selected = check_selected
+    )
+

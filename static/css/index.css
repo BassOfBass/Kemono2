@@ -722,10 +722,67 @@ thead th {
 }
 .site-section__heading {
   text-align: center;
+  text-transform: capitalize;
+}
+
+.site-section__subheading {
+  margin: 0;
 }
 
 .site-section__filters {
-  
+  max-width: 400px;
+  background-color: hsl(220, 7%, 25%);
+  border-radius: 1em;
+  padding: 1em;
+  margin: 0 auto 1em;
+}
+
+.filter-list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1.5em;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.filter-list > * {
+  flex: 0 0 7em;
+}
+
+.filter-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.filter-list__item {
+  margin: 1em 0;
+}
+
+.filter-list__link {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  width: 100%;
+  color: hsl(0, 0%, 90%);
+  background-image: linear-gradient(
+    hsl(220, 7%, 25%), 
+    hsl(0, 0%, 10%));
+  border-radius: 5px;
+  border: none;
+  padding: 0.5em;
+}
+
+.filter-list__link--selected {
+  color: hsl(0, 0%, 100%);
+  background-image: linear-gradient(
+    hsl(220, 7%, 17%), 
+    hsl(0, 0%, 7%));
 }
 
 .form {
