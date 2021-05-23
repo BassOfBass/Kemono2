@@ -1,13 +1,9 @@
 import re
-import datetime
-from datetime import timedelta
-from os import getenv
-from os.path import join, dirname
-
-import logging
+from os import getenv, stat, rename, makedirs
+from os.path import join, dirname, isfile, splitext
+from shutil import move
 from dotenv import load_dotenv
 load_dotenv(join(dirname(__file__), '.env'))
-from flask import Flask, render_template, request, redirect, g, abort, session
 
 import src.internals.database.database as database
 import src.internals.cache.redis as redis
@@ -56,9 +52,8 @@ logging.getLogger('PIL').setLevel(logging.INFO)
 logging.getLogger('requests').setLevel(logging.WARNING)
 logging.getLogger('urllib3').setLevel(logging.WARNING)
 
-cache.init_app(app)
-database.init()
-redis.init()
+def make_cache_key(*args,**kwargs):
+    return request.full_path
 
 @app.before_request
 def do_init_stuff():
@@ -81,7 +76,7 @@ def do_finish_stuff(response):
 @app.errorhandler(413)
 def upload_exceeded(error):
     props = {
-        'redirect': request.headers.get('Referer') if request.headers.get('Referer') else '/'
+        'redirect': request.args.get('Referer') if request.args.get('Referer') else '/'
     }
     limit = int(getenv('REQUESTS_IMAGES')) if getenv('REQUESTS_IMAGES') else 1048576
     props['message'] = 'Submitted file exceeds the upload limit. {} MB for requests images.'.format(

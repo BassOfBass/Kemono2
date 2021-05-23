@@ -62,9 +62,6 @@ services:
       - AUTOHEAL_CONTAINER_LABEL=all
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-  kemono-redis:
-    image: redis:6.2.0
-    container_name: kemono-redis
 volumes:
   # If you need to store your volumes manually, uncomment the "driver_opts" lines and specify your "device" location.
   db-data:

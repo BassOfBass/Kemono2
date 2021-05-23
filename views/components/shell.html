@@ -20,21 +20,18 @@
     {% if props.service %}
       <meta name="service" content="{{ props.service }}"/>
     {% endif %}
-    {% if props.id %}
-      <meta name="id" content="{{ props.id }}"/>
-    {% endif %}
     {% if props.importId %}
       <meta name="importId" content="{{ props.importId }}"/>
     {% endif %}
     {% if props.count %}
       <meta name="count" content="{{ props.count }}"/>
     {% endif %}
-    {% if props.posts|length %}
-      {% if props.posts[0].published %}
-        <meta name="published" content="{{ props.posts[0].published }}"/>
+    {% if props.posts %}
+      {% if props.posts.published %}
+        <meta name="published" content="{{ props.posts.published }}"/>
       {% endif %}
-      <meta name="added" content="{{ props.posts[0].added }}"/>
-      <meta name="id" content="{{ props.posts[0].id }}"/>
+      <meta name="added" content="{{ props.posts.added }}"/>
+      <meta name="id" content="{{ props.posts.id }}"/>
     {% endif %}
     {% block scripts %}
       <script src="{{ url_for('static', filename='js/global.js') }}" defer></script>
