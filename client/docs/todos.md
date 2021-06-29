@@ -8,5 +8,8 @@
 ### `user.html`
 - AJAX search.
 
+### `import` pages
+- consolidate them into a single page, since most of them are jsut placeholder for AJAX scripts.
+
 ## CSS
 ## JS

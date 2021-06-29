@@ -1,35 +1,38 @@
-import { initComponentFactory } from "@wp/pages/components/_index";
+import { initComponentFactory } from "@wp/components";
+import { initShell } from "./components/shell";
 import { userPage } from "./user";
 import { registerPage } from "./register";
 import { postPage } from "./post";
+import { importerPage } from "./importer_list";
 
-const main = document.querySelector("main");
-/**
- * @type {HTMLElement}
- */
-const footer = document.querySelector(".global-footer");
 /**
  * The map of page names and their callbacks.
  */
 const pages = new Map([
   ["user", userPage],
   ["register", registerPage],
-  ["post", postPage]
+  ["post", postPage],
+  ["importer", importerPage]
 ]);
 
-initComponentFactory(footer);
-
 /**
- * Initialises the scripts on the page..
+ * Initialises the scripts on the page.
+ * @param {boolean} isLoggedIn
  */
-export function initSections() {
+export function initSections(isLoggedIn) {
+  const header = document.querySelector(".global-header");
+  const main = document.querySelector("main");
+  /**
+   * @type {HTMLElement}
+   */
+  const footer = document.querySelector(".global-footer");
   /**
    * @type {NodeListOf<HTMLElement>}
    */
   const sections = main.querySelectorAll("main > .site-section");
-  const accButtons = document.querySelector("#account-buttons");
-  let isLoggedIn = localStorage.getItem('logged_in');
-
+  
+  initShell(header, isLoggedIn);
+  initComponentFactory(footer);
   sections.forEach(section => {
     const sectionName = /site-section--([a-z]+)/i.exec(section.className)[1];
 
@@ -38,21 +41,5 @@ export function initSections() {
     }
   });
 
-  if (isLoggedIn) {
-    accButtons.innerHTML += `
-      <li><a href="/favorites">[Favorites]</a></li>
-      <li><a id="logout" href="/account/logout">[Logout]</a></li>
-    `
-    document.getElementById('logout').addEventListener('click', e => {
-      e.preventDefault();
-      localStorage.removeItem('logged_in');
-      localStorage.removeItem('favs');
-      localStorage.removeItem('post_favs');
-      location.href = '/account/logout';
-    })
-  } else {
-    accButtons.innerHTML += `
-      <li><a href="/account/login">[Login]</a></li>
-    `
-  }
+  
 }

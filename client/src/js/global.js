@@ -1,11 +1,14 @@
 import "./global.scss";
-import { initSections } from "@wp/pages/_index";
+import { initSections } from "@wp/pages";
 import { initFavorites } from "@wp/js/favorites";
 
 const isLoggedIn = localStorage.getItem('logged_in') === "yes";
 
-isLoggedIn && initFavorites();
-initSections();
+if (isLoggedIn) {
+  initFavorites()
+}
+
+initSections(isLoggedIn);
 
 // function isStorageAvailable() {
 //   try {

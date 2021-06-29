@@ -40,7 +40,9 @@
       <meta property="og:title" content="{{ props.name ~ ' | Kemono' if props.name else 'Kemono' }}">
       <meta property="og:type" content="website">
       <meta property="og:site_name" content="Kemono">
-      <meta property="og:image" content="/static/kemono-logo.svg">
+      <meta property="og:image" content="{{ g.origin }}/static/kemono-logo.svg">
+      <meta property="og:image:width" content="150" />
+      <meta property="og:image:height" content="150" />
       <meta property="og:url" content="{{ g.canonical_url }}">
     {% endblock opengraph %}
 
@@ -72,10 +74,12 @@
       {% include 'components/subheader.html' %}
       {% include 'components/flash_messages.html' %}
     </header>
+
     <main class="main" id="main">
       {% block content %}
       {% endblock content %}
     </main>
+
     <footer class="global-footer">
       <div
         id="component-container" 

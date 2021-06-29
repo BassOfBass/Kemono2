@@ -1,9 +1,5 @@
 {% extends 'components/shell.html' %}
 
-{% block scripts_extra %}
-  <script src="/static/js/importer.js" defer></script>
-{% endblock %}
-
 {% block content %}
 <section class="page site-section site-section--importer" id="page">
   <h1 class="site-section__heading">Import from paysite</h1>
@@ -15,13 +11,24 @@
   >
     <div class="form__section">
       <label for="service" class="form__label">Paysite:</label>
-       <select id="service" class="form__select" name="service">
-        <option class="form__option" value="patreon" selected>Patreon</option>
-        <option class="form__option" value="fanbox">Pixiv Fanbox</option>
-        <option class="form__option" value="gumroad">Gumroad</option>
-        <option class="form__option" value="subscribestar">SubscribeStar</option>
-        <option class="form__option" value="discord">Discord</option>
-        <option class="form__option" value="fantia">Fantia</option>
+      <select id="service" class="form__select" name="service">
+        {% set form_options = [
+          ("patreon", "Patreon", true),
+          ("fanbox", "Pixiv Fanbox", false),
+          ("gumroad", "Gumroad", false),
+          ("subscribestar", "SubscribeStar", false),
+          ("discord", "Discord", false),
+          ("fantia", "Fantia", false),
+        ] %}
+        {% for value, title, is_selected in form_options %}
+          <option 
+            class="form__option"
+            value="{{ value }}"
+            {{ 'selected' if is_selected  }}
+          >
+            {{ title }}
+          </option>
+        {% endfor %}
       </select>
     </div>
 

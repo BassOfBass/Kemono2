@@ -1,15 +1,21 @@
 .fancy-image {
-  &--block {
-    display: inline-block;
-  }
 
   &--background {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+    
+    & .fancy-image__image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 
-  &____picture {}
+  // &____picture {}
   
   &__image {
     max-width: 100%;

@@ -1,4 +1,7 @@
-export function registerPage() {
+/**
+ * @param {HTMLElement} section 
+ */
+export function registerPage(section) {
   populate_favorites();
 }
 

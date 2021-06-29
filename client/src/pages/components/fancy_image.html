@@ -1,6 +1,6 @@
-{% macro fancy_image(src, alt=src, srcset=src, is_inline=true) %}
+{% macro fancy_image(src, srcset=src, is_inline=true, is_background=false, alt="") %}
   {% if is_inline %}
-    <span class="fancy-image">
+    <span class="fancy-image {{ fancy-image--background if is_background }}">
       {{ __image(src, alt, srcset) }}
     </span>
   {% else %}
@@ -20,15 +20,14 @@
   </a>
 {% endmacro %} #}
 
-{% macro __image(src, alt=src, srcset=src) %}
+{% macro __image(src, srcset=src, lazy=true, alt="") %}
   <picture class="fancy-image__picture">
     <img 
       class="fancy-image__image"
       src="{{ src }}" 
       alt="{{ alt }}"
-      title="{{ alt }}"
       srcset="{{ srcset }}"
-      loading="lazy"
+      loading="{{ 'lazy' if lazy else 'eager' }}"
     >
   </picture>
 {% endmacro %}

@@ -27,9 +27,10 @@ const webpackConfig = {
   resolve: {
     extensions: [".js"],
     alias: {
+      ["@wp/pages"]: path.join(projectPath, "pages", "_index.js"),
+      ["@wp/components"]: path.join(projectPath, "pages", "components", "_index.js"),
       ["@wp/js"]: path.join(projectPath, "js"),
       ["@wp/css"]: path.join(projectPath, "css"),
-      ["@wp/pages"]: path.join(projectPath, "pages"),
       ["@wp/assets"]: path.join(projectPath, "assets"),
       ["@wp/api"]: path.join(projectPath, "api", "_index.js"),
     }

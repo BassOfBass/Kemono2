@@ -2,7 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@wp/pages/*": ["./pages/*"],
+      "@wp/pages": ["./pages/_index.js"],
+      "@wp/components": ["./pages/components/_index.js"],
       "@wp/js/*": ["./js/*"],
       "@wp/css/*": ["./css/*"],
       "@wp/assets/*": ["./assets/*"],
