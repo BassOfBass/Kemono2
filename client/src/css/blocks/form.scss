@@ -1,20 +1,23 @@
+@use "../variables" as *;
+
 .form {
   box-sizing: border-box;
-  max-width: 360px;
-  padding: 1em;
+  max-width: $width-mobile;
+  padding: $size-normal;
   margin: 0 auto;
 
+  
   &--bigger {
-    max-width: 480px;
+    max-width: $width-phone;
   }
 
   &--wide {
-    max-width: 720px;
+    max-width: $width-tablet;
   }
 
   &__section,
   &__fieldset {
-    padding-bottom: 1em;
+    padding-bottom: $size-normal;
     transition-property: opacity, visibility;
     transition-duration: 250ms;
 
@@ -75,11 +78,115 @@
         transition-duration: 250ms;
       }
     }
+
+    &--radio {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+      align-items: center;
+
+      & .form__input {
+        appearance: none;
+        flex: 0 0 44px;
+        height: 44px;
+        background-color: var(--colour0-primary);
+        border-radius: 50%;
+        border: $size-thin solid var(--colour0-secondary);
+        padding: 0;
+        margin-right: 1em;
+        transition-property: border, color;
+
+        &:checked {
+          border-width: $size-normal;
+          border-color: var(--colour-submit-primary);
+
+          & + .form__label {
+            color: var(--colour-submit-primary);
+          }
+        }
+      }
+
+      & .form__label {
+        flex: 1 1 auto;
+        font-size: 1.25em;
+        transition-property: color;
+        transition-duration: var(--duration-global);
+      }
+    }
+
+    &--file {
+      position: relative;
+
+      & .form__input {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: -1;
+        min-height: 0;
+        max-height: 0;
+        max-width: 0;
+        padding: 0;
+        opacity: 0;
+        transform: translate(-50%, -50%);
+      }
+
+      & .form__label {
+        display: inline-block;
+        box-sizing: border-box;
+        min-height: 44px;
+        min-width: 44px;
+        width: 100%;
+        text-align: center;
+        font-family: inherit;
+        font-size: 100%;
+        border-radius: 5px;
+        background-image: linear-gradient(
+        hsl(0, 0%, 7%),
+        hsl(220, 7%, 17%)
+        );
+        padding: $size-small;
+        transition-property: color, border-color;
+        transition-duration: var(--duration-global);
+      }
+    }
+
+    &--currency {
+      --local-currency: "$";
+
+      & .form__wrapper {
+        position: relative;
+
+        &::before {
+          position: absolute;
+          top: 50%;
+          left: 1em;
+          content: var(--local-currency);
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      & .form__input {
+        padding-left: 2em;
+      }
+    }
+  }
+
+  &__fieldset {
+    border-radius: 5px;
+    border-color: var(--colour0-secondary);
+    margin-bottom: $size-normal;
+
+    &--empty {
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
   }
 
   &__input,
   &__button,
-  &__select {
+  &__select,
+  &__textarea {
     box-sizing: border-box;
     min-height: 44px;
     min-width: 44px;
@@ -87,45 +194,39 @@
     font-family: inherit;
     font-size: 100%;
     border-radius: 5px;
-    padding: 0.5em;
+    padding: $size-small;
+    transition-property: color, border-color;
+    transition-duration: var(--duration-global);
   }
 
   &__subtitle {
     display: block;
     line-height: normal;
-    color: hsl(0, 0%, 45%);
+    color: var(--colour0-secondary);
   }
   
-  &__label {
-    cursor: pointer;
-  }
+  &__label {}
   
   &__input {
     background: hsl(224, 7%, 32%);
-    color: hsl(0, 0%, 100%);
-    border: 0;
-  }
-  
-  &__select {
-    cursor: pointer;
-  }
-  
-  &__option {
-    color: hsl(0, 0%, 100%);
-    background-color: hsl(224, 7%, 32%);
+    color: var(--colour0-primary);
+    border-color: transparent;
   }
   
   /* quick hack to overwrite attribute rules */
-  &__input.form__input--text,
-  &__input.form__input--password {
-    text-align: left;
+  &__input {
+
+    &--text,
+    &--password {
+      text-align: left;
+    }
   }
   
   &__button {
-    cursor: pointer;
 
     &--submit {
       text-align: center;
+      color: var(--colour0-primary);
       background-image: linear-gradient(
         hsl(220, 7%, 17%), 
         hsl(0, 0%, 7%)

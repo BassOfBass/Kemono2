@@ -6,6 +6,7 @@ $width-phone: 480px;
 $width-tablet: 720px;
 $width-laptop: 1280px;
 $width-desktop: 1920px;
+$width-ultrahd: 3840px;
 
 // sizes for borders/padding/margins/gaps
 $size-nano: 0.0625em;
@@ -21,4 +22,18 @@ $size-big: 2em;
   --colour0-secondary: hsl(0, 0%, 45%);
   --colour1-primary: hsl(210, 6%, 12%);
   --colour1-secondary: hsl(220, 7%, 25%);
+
+  --colour-submit-primary: hsl(210, 100%, 60%);
+
+  // durations
+  --duration-none: 0;
+  --duration-swift: 125ms;
+  --duration-fast: 250ms;
+  --duration-normal: 500ms;
+  --duration-slow: 750ms;
+  --duration-global: var(--duration-fast);
+
+  @media (prefers-reduced-motion) {
+    --duration-global: var(--duration-none);
+  }
 }

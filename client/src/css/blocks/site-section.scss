@@ -1,7 +1,10 @@
+@use "../variables.scss" as *;
+
 .site-section {
 
-  &__heading {
-    text-align: center;
+  &__header {
+    max-width: $width-tablet;
+    margin: 0 auto;
   }
 
   &__register-cta {

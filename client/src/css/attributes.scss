@@ -3,11 +3,23 @@
 // and their pseudo-classes/elements go there
 // base tags are for easier grouping/folding
 
+fieldset {
+  &:disabled {
+    opacity: 50%;
+
+    & * {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+}
+
 input {
 
   &[type="submit"] {
     min-height: 24px;
     text-align: center;
+    color: var(--colour0-primary);
     background-image: linear-gradient(#282a2e, #111111);
     border-radius: 5px;
     border: 0;
@@ -17,14 +29,20 @@ input {
   &[type="password"], 
   &[type="number"] {
     border-radius: 5px;
-    box-shadow: inset 0 1px 3px #1f2024;
-    background:#3a3d43;
-    color: #fff;
+    box-shadow: inset 0 1px 3px hsl(228, 7%, 13%);
+    background:hsl(220, 7%, 25%);
+    color: hsl(0, 0%, 100%);
     border: 0;
   }
 
   &[type="checkbox"],
   &[type="radio"] {
     cursor: pointer;
+  }
+}
+
+select {
+  &:focus {
+    border-color: var(--colour-submit-primary);
   }
 }
