@@ -1,4 +1,5 @@
 import { addFavouriteArtist, findFavouriteArtist, removeFavouriteArtist } from "@wp/js/favorites";
+import { localStore } from "@wp/store";
 import { createComponent } from "./components/_index";
 
 /** 
@@ -26,8 +27,8 @@ async function initButtons(panelElement, artistID, artistService) {
    */
   const favButton = createComponent("user-header__favourite");
   const favItem = await findFavouriteArtist(artistID, artistService);
-
-  if (localStorage.getItem('logged_in') && favItem) {
+  
+  if (localStore.account.getLogin() === "yes" && favItem) {
     favButton.classList.add("user-header__favourite--unfav");
     const [icon, text] = favButton.children;
     icon.textContent = "★";

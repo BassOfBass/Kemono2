@@ -1,3 +1,5 @@
+import { localStore } from "@wp/store";
+
 /**
  * @param {HTMLElement} header 
  * @param {SVGAnimatedBoolean} isLoggedIn 
@@ -13,9 +15,9 @@ export function initShell(header, isLoggedIn) {
     `
     document.getElementById('logout').addEventListener('click', e => {
       e.preventDefault();
-      localStorage.removeItem('logged_in');
-      localStorage.removeItem('favs');
-      localStorage.removeItem('post_favs');
+      localStore.account.removeLogin();
+      localStore.favorites.removeFavouriteUsers();
+      localStore.favorites.removeFavouritePosts();
       location.href = '/account/logout';
     })
   } else {

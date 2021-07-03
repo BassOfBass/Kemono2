@@ -9,6 +9,7 @@
       "@wp/assets/*": ["./assets/*"],
       "@wp/api": ["./api/_index.js"],
       "@wp/utils": ["./utils/_index.js"],
+      "@wp/store": ["./store/_index.js"],
     },
     "target": "es6",
     "module": "es6",

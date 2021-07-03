@@ -1,3 +1,5 @@
+import { localStore } from "@wp/store";
+
 /**
  * @param {HTMLElement} section 
  */
@@ -7,7 +9,7 @@ export function registerPage(section) {
 
 function populate_favorites() {
   var input = document.getElementById('serialized-favorites');
-  var favorites = localStorage.getItem("favorites");
+  var favorites = localStore.legacy.getFavorites();
   var to_serialize = [];
   if (input && favorites) {
     var artists = favorites.split(',');

@@ -1,17 +1,18 @@
 import { kemonoAPI } from "@wp/api";
+import { localStore } from "@wp/store";
 
 export async function initFavorites() {
-  let artistFavs = localStorage.getItem('favs');
-  let postFavs = localStorage.getItem('post_favs');
+  let userFavs = localStore.favorites.getFavouriteUsers();
+  let postFavs = localStore.favorites.getFavouritePosts();
 
-  if (!artistFavs) {
+  if (!userFavs) {
     /**
      * @type {string}
      */
     const favs = await kemonoAPI.favorites.retrieveFavoriteArtists();
 
     if (favs) {
-      localStorage.setItem("favs", favs);
+      localStore.favorites.setFavouriteUsers(favs);
     }
   }
 
@@ -22,7 +23,7 @@ export async function initFavorites() {
     const favs = await kemonoAPI.favorites.retrieveFavoritePosts();
 
     if (favs) {
-      localStorage.setItem("post_favs", favs);
+      localStore.favorites.setFavouritePosts(favs);
     }
   }
 }
@@ -36,11 +37,12 @@ async function saveFavouriteArtists() {
       return false;
     }
 
-    localStorage.setItem("favs", favs);
+    localStore.favorites.setFavouriteUsers(favs);
     return true;
 
   } catch (error) {
     console.error(error);
+    return false;
   }
 }
 
@@ -53,18 +55,19 @@ async function saveFavouritePosts() {
       return false;
     }
 
-    localStorage.setItem("post_favs", favs);
+    localStore.favorites.setFavouritePosts(favs);
     return true;
 
   } catch (error) {
     console.error(error);
+    return false;
   }
 }
 
 /**
  * @param {string} id 
  * @param {string} service
- * @returns {Promise<KemonoAPI.Favorites.Artist> | undefined}
+ * @returns {Promise<KemonoAPI.Favorites.Artist | undefined>}
  */
 export async function findFavouriteArtist(id, service) {
   /**
@@ -73,7 +76,7 @@ export async function findFavouriteArtist(id, service) {
   let favList;
 
   try {
-    favList = JSON.parse(localStorage.getItem("favs"));
+    favList = JSON.parse(localStore.favorites.getFavouriteUsers());
 
   } catch (error) {
     // corrupted entry
@@ -103,7 +106,7 @@ export async function findFavouriteArtist(id, service) {
  * @param {string} service 
  * @param {string} user 
  * @param {string} postID 
- * @returns {Promise<KemonoAPI.Favorites.Post> | undefined}
+ * @returns {Promise<KemonoAPI.Favorites.Post | undefined>}
  */
 export async function findFavouritePost(service, user, postID) {
   /**
@@ -112,7 +115,8 @@ export async function findFavouritePost(service, user, postID) {
   let favList;
  
   try {
-    favList = JSON.parse(localStorage.getItem("post_favs"));
+    
+    favList = JSON.parse(localStore.favorites.getFavouritePosts());
     
     if (!favList) {
       return undefined;
@@ -153,7 +157,7 @@ export async function addFavouriteArtist(id, service) {
   }
 
   const newFavs = await kemonoAPI.favorites.retrieveFavoriteArtists();
-  localStorage.setItem("favs", newFavs);
+  localStore.favorites.setFavouriteUsers(newFavs);
 
   return true;
 }
@@ -170,7 +174,7 @@ export async function removeFavouriteArtist(id, service) {
   }
 
   const favItems = await kemonoAPI.favorites.retrieveFavoriteArtists();
-  localStorage.setItem("favs", favItems);
+  localStore.favorites.setFavouriteUsers(favItems);
 
   return true;
 }
@@ -188,7 +192,7 @@ export async function addFavouritePost(service, user, postID) {
   }
 
   const newFavs = await kemonoAPI.favorites.retrieveFavoritePosts();
-  localStorage.setItem("post_favs", newFavs);
+  localStore.favorites.setFavouritePosts(newFavs)
 
   return true;
 };
@@ -207,7 +211,7 @@ export async function removeFavouritePost(service, user, postID) {
   }
 
   const favItems = await kemonoAPI.favorites.retrieveFavoritePosts();
-  localStorage.setItem("post_favs", favItems);
+  localStore.favorites.setFavouritePosts(favItems);
 
   return true;
 };
