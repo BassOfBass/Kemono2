@@ -1,0 +1,11 @@
+{% macro svg_icon(id, is_inline=true, class_name=none) %}
+  {# TODO: fix this abomination with loader #}
+  <span class="svg-icon {{ class_name if class_name }}">
+    <svg class="svg-icon__svg">
+      <use 
+        class="svg-icon__use"
+        href="{{ '<%= require('@wp/assets/svg-spritesheet.svg') %>#' ~ id }}"
+      />
+    </svg>
+  </span>
+{% endmacro %}
