@@ -1,0 +1,11 @@
+.svg-icon {
+
+  &-kemono-logo {
+    &__eyepatch {
+      fill: var(--colour1-secondary);
+    }
+    &__fur {
+      fill: var(--colour0-primary);
+    }
+  }
+}

@@ -1,6 +1,6 @@
-{% macro svg_icon(id, is_inline=true, class_name=none) %}
-  {# TODO: fix this abomination with loader #}
+{% macro svg_icon(id, class_name=none) %}
   <span class="svg-icon {{ class_name if class_name }}">
+    {# TODO: fix this abomination with loader #}
     <svg class="svg-icon__svg">
       <use 
         class="svg-icon__use"
@@ -8,4 +8,8 @@
       />
     </svg>
   </span>
+{% endmacro %}
+
+{% macro kemono_logo(class_name=none) %}
+  {{ svg_icon("kemono-logo", class_name) }}
 {% endmacro %}

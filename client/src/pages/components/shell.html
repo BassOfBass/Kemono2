@@ -1,5 +1,6 @@
 {% from 'components/loading_icon.html' import loading_icon %}
 {% from 'components/timestamp.html' import timestamp %}
+{% from 'components/svg_icons.html' import svg_icon, kemono_logo %}
 
 <!DOCTYPE html>
 <html prefix="og: https://ogp.me/ns#">
@@ -70,7 +71,20 @@
   </head>
   <body>
     <header class="global-header">
-      {% include 'components/header.html' %}
+      <ul class="header nav-list">
+        <li class="nav-list__home">
+          <a href="/">
+            {{ kemono_logo("nav-list__home-icon") }}
+            <span>[Home]</span>
+          </a>
+        </li>
+        <li><a href="/artists">[Artists]</a></li>
+        <li><a href="/artists/updated">[Recently Updated Artists]</a></li>
+        <li><a href="/posts">[Recent Posts]</a></li>
+        <li><a href="/importer">[Import]</a></li>
+        <li><a href="/requests">[Requests]</a></li>
+        <div id="account-buttons" style="display: inline-block;"></div>
+      </ul>
       {% include 'components/subheader.html' %}
       {% include 'components/flash_messages.html' %}
     </header>
@@ -85,7 +99,8 @@
         id="component-container" 
         class="component-container" 
         hidden
-      >
+      > 
+        {{ svg_icon="" }}
         {{ timestamp("") }}
         {{ loading_icon() }}
         {% block components %}
