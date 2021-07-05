@@ -8,33 +8,22 @@ const legacyNames = {
   favorites: "favorites",
 }
 
-const getLogin = getValue(storeNames.login);
-const removeLogin = removeValue(storeNames.login);
-const getFavorites = getValue(legacyNames.favorites);
-const removeFavorites = removeValue(legacyNames.favorites);
-const getFavouriteUsers = getValue(storeNames.userFavs);
-const setFavouriteUsers = setValue(storeNames.userFavs);
-const getFavouritePosts = getValue(storeNames.postFavs);
-const setFavouritePosts = setValue(storeNames.postFavs);
-const removeFavouriteUsers = removeValue(storeNames.userFavs);
-const removeFavouritePosts = removeValue(storeNames.postFavs);
-
 export const localStore = {
   account: {
-    getLogin,
-    removeLogin
+    getLogin: getValue(storeNames.login),
+    removeLogin: removeValue(storeNames.login)
   },
   favorites: {
-    getFavouriteUsers,
-    getFavouritePosts,
-    setFavouriteUsers,
-    setFavouritePosts,
-    removeFavouriteUsers,
-    removeFavouritePosts,
+    getFavouriteUsers: getValue(storeNames.userFavs),
+    setFavouriteUsers: setValue(storeNames.userFavs),
+    removeFavouriteUsers: removeValue(storeNames.userFavs),
+    getFavouritePosts: getValue(storeNames.postFavs),
+    setFavouritePosts: setValue(storeNames.postFavs),
+    removeFavouritePosts: removeValue(storeNames.postFavs),
   },
   legacy: {
-    getFavorites,
-    removeFavorites,
+    getFavorites: getValue(legacyNames.favorites),
+    removeFavorites: removeValue(legacyNames.favorites),
   }
 }
 
