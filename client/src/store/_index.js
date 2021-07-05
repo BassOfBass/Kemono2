@@ -1,1 +1,1 @@
-export { localStore } from "./local-store/_index";
+export { localStore } from "./local-store";
