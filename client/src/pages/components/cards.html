@@ -1,0 +1,51 @@
+{% from 'components/timestamp.html' import timestamp %}
+
+{% macro post_card(post) %}
+  {% set src = post.file.path if post.file.path and post.file.path|lower|regex_match("\.(gif|jpe?g|jpe|png|webp)$") %}
+  <article 
+    class="post-card"
+  > 
+    <header class="post-card__header">  
+      <h2 class="post-card__heading">
+        {{ post.title }}
+      </h2>
+    </header>
+    <div class="post-card__body">
+      {% if src %}
+        <div class="post-card__image-container">
+          {# TODO: move backup image logic to the script #}
+          <img 
+            class="post-card__image"
+            src="/thumbnail{{ src|replace('https://kemono.party', '') }}" 
+          >
+        </div>
+      {% endif %}
+      {{ post.content|safe }}
+      {# {{ post.content|striptags }} #}
+    </div>
+    <footer class="post-card__footer">
+      <p class="post-card__link">
+        <a 
+          href="/{{ post.service }}/user/{{ post.user }}/post/{{ post.id }}" 
+        >
+          Read more...
+        </a>
+      </p>
+      {% if post.published %}
+        <div>
+          {{ timestamp(post.published) }}
+        </div>
+      {% endif %}
+      <div>
+        {% if post.attachments|length %}
+          {{ post.attachments|length }} {{ 'attachment' if post.attachments|length == 1 else 'attachments' }}
+        {% else %}
+          No attachments
+        {% endif %}
+      </div>
+    </footer>
+  </article>      
+{% endmacro %}
+
+{% macro user_card() %}
+{% endmacro %}

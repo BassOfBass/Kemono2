@@ -1,9 +1,21 @@
 {% extends 'components/shell.html' %}
+
+{% from 'components/card_list.html' import card_list %}
+{% from 'components/cards.html' import post_card %}
+
+{% block scripts_extra %}
+  <script src="{{ url_for('static', filename='js/favorites.js') }}" defer ></script>
+{% endblock scripts_extra %}
+
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/favorites.css') }}">
-<div class="page" id="page">
-  <h3>Favorites</h3>
+<section class="page site-section site-section--favorites" id="page">
+  <header class="site-section__header">
+    <h1 class="site-section__heading">Favorite {{ 'Artists' if props.fave_type == 'artist' else 'Posts' }}</h1>
+  </header>
+  
   {% if source == 'session' %}
+  <div>
     <table class="search-results" width="100%">
       <thead>
         <tr>
@@ -53,8 +65,41 @@
     {% if props.fave_type == "artist" %}
       {% include 'components/artist_list.html' %}
     {% else %}
-      {% include 'components/post_list.html' %}
+      <div class="paginator" id="paginator-top">
+        {% include 'components/paginator.html' %}
+        <form
+          action="{{ request.path }}"
+          method="GET"
+          enctype="application/x-www-form-urlencoded"
+        >
+          <input
+            type="text"
+            name="q"
+            id="q"
+            autocomplete="off"
+            value="{{ request.args.get('q') if request.args.get('q') }}"
+            placeholder="search for posts..."
+            class="search-input"
+          >
+          <input type="submit" style="display: none;">
+        </form>
+      </div>
+
+      {% call card_list() %}
+        {% for post in results %}
+          {{ post_card(post) }}
+        {% else %}
+          <h2 class="subtitle">Nobody here but us chickens!</h2>
+          <p class="subtitle">
+            There are either no more posts beyond this page, or this user hasn't been imported.
+          </p>
+        {% endfor %}
+      {% endcall %}
+
+      <div class="paginator" id="paginator-bottom">
+        {% include 'components/paginator.html' %}
+      </div>
     {% endif %}
   {% endif %}
-  <script src="{{ url_for('static', filename='js/favorites.js') }}"></script>
-{% endblock %}
+</section>
+{% endblock content %}

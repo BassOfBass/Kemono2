@@ -1,7 +1,10 @@
 .site-section {
 
+  &__header {}
+
   &__heading {
     text-align: center;
+    margin: 0;
   }
 
   &__subheading {

@@ -22,4 +22,15 @@ $size-big: 2em;
   --colour0-tertirary: hsl(0, 0%, 45%);
   --colour1-primary: hsl(210, 6%, 12%);
   --colour1-secondary: hsl(220, 7%, 25%);
+  --colour1-tertiary: hsl(210, 15%, 5%);
+
+  // links
+  --anchour-color1-primary: hsl(200, 100%, 80%);
+  --anchour-color1-secondary: hsl(200, 60%, 60%);
+  --anchour-colour2-primary: hsl(210, 100%, 20%);
+  --anchour-colour2-secondary: hsl(210, 70%, 30%);
+
+  --duration-global: 250ms;
+
+  --line-height: 1.5;
 }

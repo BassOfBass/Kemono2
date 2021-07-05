@@ -1,4 +1,6 @@
 export { LoadingIcon } from "./loading_icon";
+export { CardList } from "./card_list";
+
 
 /**
  * @type {Map<string, HTMLElement>}

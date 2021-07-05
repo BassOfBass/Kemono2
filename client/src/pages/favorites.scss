@@ -1,13 +1,15 @@
-div.dropdowns {
+.site-section--favorites {
+  div.dropdowns {
     display:grid;
     grid-template-columns: max-content max-content;
     grid-gap:5px;
-}
+  }
 
-div.dropdowns > label {
+  div.dropdowns > label {
     text-align: right;
-}
+  }
 
-div.dropdowns > label:after {
+  div.dropdowns > label:after {
     content: ":";
+  }
 }
