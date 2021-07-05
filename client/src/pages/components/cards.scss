@@ -1,0 +1,82 @@
+@use "../../css/variables" as *;
+
+.post-card {
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  background-color: var(--colour1-tertiary);
+  border-radius: 10px;
+  border: $size-thin solid transparent;
+  transition-property: transform;
+
+  &:hover,
+  &:focus-within {
+    transform: scale(1.05);
+
+    & .post-card__image-container {
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+
+  & > * {
+    flex: 0 1 auto;
+    padding: $size-small;
+  }
+
+  &__header {}
+  
+  &__heading {}
+
+  &__body {
+    position: relative;
+    flex: 1 0 11.5em;
+    align-self: stretch;
+    overflow: hidden;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+    background-color: var(--colour1-tertiary);
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      height: 2em;
+      background: linear-gradient(
+        to bottom,
+        hsla(0, 0%, 0%, 0), 
+        var(--colour1-tertiary)
+      );
+    }
+  }
+
+  &__image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    background-color: var(--colour1-tertiary);
+    transition-property: opacity, visibility;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &__footer {
+    align-self: center;
+  }
+
+  &__link {
+    text-align: center;
+    margin: 0;
+  }
+}

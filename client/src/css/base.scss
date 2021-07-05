@@ -15,6 +15,7 @@ html {
   box-sizing: inherit;
   // TODO: fix this rule
   color: var(--colour0-primary);
+  transition-duration: var(--duration-global);
 }
 
 body {
@@ -46,16 +47,21 @@ main {
 h1 {
   font-size: 2.2rem;
   font-weight: normal;
+  margin: 0;
 }
 
-h2, 
+h2 {
+  font-size: 2rem;
+  font-weight: normal;
+  margin: 0;
+}
+
 h3 {
   font-weight: normal;
 }
 
 a {
-  color: #87CEFA;
-
+  color: hsl(203, 92%, 75%);
   &:visited {
     text-decoration: none;
   }
@@ -64,6 +70,45 @@ a {
     text-decoration: none;
   }
 }
+
+// TODO: think the styles through
+/*
+a {
+  --local-colour1-primary: var(--anchour-color1-primary);
+  --local-colour1-secondary: var(--anchour-color1-secondary);
+  --local-colour2-primary: var(--anchour-colour2-primary);
+  --local-colour2-secondary: var(--anchour-colour2-secondary);
+
+  outline: none;
+  text-decoration: none;
+  padding: 2px;
+  border-bottom: $size-nano solid transparent;
+  transition-property: color, border-color, background-color;
+
+  &:link {
+    color: var(--local-colour1-primary);
+  }
+  
+  &:visited {
+    color: var(--local-colour1-secondary);
+  }
+  
+  &:focus {
+    background-color: var(--local-colour2-primary);
+    border-bottom-color: inherit;
+  }
+  
+  &:hover {
+    background-color: var(--local-colour2-primary);
+    border-bottom-color: inherit;
+  }
+  
+  &:active {
+    color: var(--local-colour2-primary);
+    background-color: var(--local-colour1-primary);
+  }
+}
+*/
 
 img {
   max-width: 100%;
