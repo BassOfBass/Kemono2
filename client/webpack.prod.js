@@ -1,10 +1,13 @@
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 // const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const { merge } = require("webpack-merge");
 
 const baseConfig = require("./webpack.config");
+
+const prodPath = path.resolve(__dirname, "dist");
 
 /**
  * @type import("webpack").Configuration
@@ -13,6 +16,10 @@ const webpackConfigProd = {
   mode: "production",
   // devtool: "source-map",
   plugins: [
+    new WebpackManifestPlugin({
+      fileName: "bundle-manifest.json",
+      filter: (file) => file.path.startsWith("/static/bundle"),
+    }),
     new CopyWebpackPlugin({
       patterns: [
         {
@@ -95,7 +102,7 @@ const webpackConfigProd = {
     ]
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: prodPath,
     filename: "static/bundle/js/[name]-[contenthash].bundle.js",
     assetModuleFilename: "static/bundle/assets/[name]-[contenthash][ext][query]",
     // sourceMapFilename: "source-maps/[file].map[query]",
