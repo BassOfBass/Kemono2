@@ -1,11 +1,10 @@
 {% extends 'components/shell.html' %}
+
+{% from 'components/paginator.html' import paginator %}
+
 {% block content %}
   <div class="page" id="page">
-    {% if results|length %}
-      <div class="paginator" id="paginator-top">
-        {% include 'components/paginator.html' %}
-      </div>
-    {% endif %}
+    {{ paginator(request, props, base) if results|length }}
     {% if results|length == 0 %}
       <div class="no-posts">
         <p class="subtitle">No artists found for your query.</p>
@@ -50,11 +49,7 @@
         </tbody>
       </table>
     {% endif %}
-    {% if results|length %}
-      <div class="paginator" id="paginator-bottom">
-        {% include 'components/paginator.html' %}
-      </div>
-    {% endif %}
+    {{ paginator(request, props, base, true) if results|length }}
   </div>
   {% if results|length %}
     <script src="https://unpkg.com/unfetch@4.1.0/polyfill/index.js"></script>

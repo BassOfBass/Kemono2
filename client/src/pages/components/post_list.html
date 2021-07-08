@@ -1,6 +1,9 @@
+{% from 'components/paginator.html' import paginator, new_paginator  %}
+
 <div class="vertical-views">
   <div class="paginator" id="paginator-top">
-    {% include 'components/paginator.html' %}
+    {{ new_paginator(request, props, base) }}}
+    {{ paginator(request, props, base) }}
     <form
       action="{{ request.path }}"
       method="GET"
@@ -33,7 +36,5 @@
       {% endwith %}
     {% endfor %}
   </div>
-  <div class="paginator" id="paginator-bottom">
-    {% include 'components/paginator.html' %}
-  </div>
+  {{ paginator(request, props, base) }}
 </div> 

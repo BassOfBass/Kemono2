@@ -1,9 +1,7 @@
+{% from 'components/paginator.html' import paginator, new_paginator %}
+
 <div id="vertical-views" class="vertical-views">
-    {% if results|length %}
-      <div class="paginator" id="paginator-top">
-        {% include 'components/paginator.html' %}
-      </div>
-    {% endif %}
+    {{ paginator(request, props, base) if results|length }}
     <table class="search-results" width="100%">
       <thead>
         <tr>
@@ -52,10 +50,6 @@
         {% endif %}
       </tbody>
     </table>
-    {% if results|length %}
-      <div class="paginator" id="paginator-bottom">
-        {% include 'components/paginator.html' %}
-      </div>
-    {% endif %}
+    {{ paginator(request, props, base, true) if results|length }}
   </div>
 </div>

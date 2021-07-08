@@ -1,27 +1,98 @@
-{% macro paginator(request, props, base) %}
+{% macro new_paginator(request, props, base) %}
   {% set skip = request.args.get('o')|int if request.args.get('o') else 0 %}
+  {% set current_page = (props.count / skip)|round(0, 'ceil')|int if skip != 0 else 1 %}
+  {% set max_pages = (props.count / props.limit)|round(0, 'ceil')|int %}
+
   <div class="paginator">
+    <small class="paginator__count">
+      Showing {{ skip + 1 }} - {{ skip + props.limit }} of {{ props.count }}
+    </small>
+    <ul class="paginator__pages">
+      <li class="paginator__page">
+        <a href="{{ url_for(request.endpoint, o = skip - props.limit, **base)}}" class="paginator__link">First</a>
+      </li>
+      <li class="paginator__page">
+        <a href="{{ url_for(request.endpoint, o = skip - props.limit, **base) }}" class="paginator__link">Previous</a>
+      </li>
+      <li class="paginator__page">
+        <form class="paginator__selector">
+          <div class="form__section">
+            <label for="page-select" class="form_label">Page:</label>
+            <div>
+              <button 
+                type="button"
+              >
+                -1
+              </button>
+              <input 
+                id="page-select" 
+                class="form_input"
+                type="number" 
+                name="page"
+                min="1"
+                max="{{ max_pages }}"
+                step="1"
+                value="{{ current_page }}" 
+              >
+              <button 
+                type="button"
+              >
+                +1
+              </button>
+            </div>
+            
+            <span> out of {{ max_pages }}</span>
+          </div>
+          <div class="form__section">
+            <button
+              class="form__button form__button--submit" 
+              type="submit"
+            >
+              Go
+            </button>
+          </div>
+        </form>
+      </li>
+      <li class="paginator__page">
+        <a href="{{ url_for(request.endpoint, o = skip - props.limit, **base) }}" class="paginator__link">Next</a>
+      </li>
+      <li class="paginator__page">
+        <a href="{{ url_for(request.endpoint, o = skip - props.limit, **base) }}" class="paginator__link">Last</a>
+      </li>
+    </ul>
+    
+  </div>
+{% endmacro %}
+
+{% macro paginator(request, props, base, is_bottom=false) %}
+  {% set skip = request.args.get('o')|int if request.args.get('o') else 0 %}
+  <div class="paginator {{ 'paginator--bottom' if is_bottom }}">
     <small class="paginator__count">
       Showing {{ skip + 1 }} - {{ skip + props.limit }} of {{ props.count }}
     </small>
 
     <ul class="paginator__pages">
       {% if skip >= props.limit %}
-        <li>
-          <a 
+        <li class="paginator__page">
+          <a
+            class="paginator__link"
             href="{{ url_for(request.endpoint, o = skip - props.limit, **base) }}" 
-            title="Previous page"
           >
             &lt;
           </a>
         </li>
       {% else %}
-        <li class="subtitle">&lt;</li>
+        <li class="paginator__page paginator__page--no-link">
+          &lt;
+        </li>
       {% endif %}
 
       {% if skip >= 100 %}
-        <li>
-          <a href="{{ url_for(request.endpoint, o = 0, **base) }}">
+        <li class="paginator__page">
+          <a 
+            class="paginator__link" 
+            href="{{ url_for(request.endpoint, o = 0, **base) }}"
+          >
             1
           </a>
         </li>

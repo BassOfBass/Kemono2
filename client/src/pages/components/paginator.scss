@@ -1,4 +1,28 @@
+@use "../../css/variables" as *;
+
 .paginator {
   &__count {}
-  &__pages {}
+
+  &__pages {
+    list-style: none;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+
+    & > * {
+      margin: $size-normal;
+    }
+  }
+
+  &__page {
+    &--no-link {
+      color: var(--colour0-tertirary);
+    }
+  }
+
+  
+  &__link {}
+
+  &__selector {}
 }

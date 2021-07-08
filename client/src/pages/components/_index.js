@@ -1,5 +1,5 @@
 export { LoadingIcon } from "./loading_icon";
-
+export { Paginator } from "./paginator";
 /**
  * @type {Map<string, HTMLElement>}
  */
