@@ -104,6 +104,21 @@
     background: hsl(224, 7%, 32%);
     color: hsl(0, 0%, 100%);
     border: 0;
+
+    /* quick hack to overwrite attribute rules */
+    &--text,
+    &--password {
+      text-align: left;
+    }
+
+    &--number {
+      -moz-appearance: textfield;
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+      }
+    }
   }
   
   &__select {
@@ -115,17 +130,12 @@
     background-color: hsl(224, 7%, 32%);
   }
   
-  /* quick hack to overwrite attribute rules */
-  &__input.form__input--text,
-  &__input.form__input--password {
-    text-align: left;
-  }
-  
   &__button {
     cursor: pointer;
 
     &--submit {
       text-align: center;
+      color: var(--colour0-primary);
       background-image: linear-gradient(
         hsl(220, 7%, 17%), 
         hsl(0, 0%, 7%)

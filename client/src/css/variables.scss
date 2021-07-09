@@ -22,4 +22,8 @@ $size-big: 2em;
   --colour0-tertirary: hsl(0, 0%, 45%);
   --colour1-primary: hsl(210, 6%, 12%);
   --colour1-secondary: hsl(220, 7%, 25%);
+
+  // durations
+  --duration-fast: 250ms;
+  --duration-global: var(--duration-fast);
 }

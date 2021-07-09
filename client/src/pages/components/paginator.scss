@@ -9,6 +9,7 @@
     flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
+    padding: 0;
 
     & > * {
       margin: $size-normal;
@@ -24,5 +25,48 @@
   
   &__link {}
 
-  &__selector {}
+  &__selector {
+    position: relative;
+    width: min-content;
+
+    &:not(:focus-within) {
+      & .paginator__decrement,
+      & .paginator__increment,
+      & .paginator__submit {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+    }
+  }
+
+  &__number {
+    border-radius: 0;
+  }
+
+  &__label {
+    position: absolute;
+    bottom: 100%;
+  }
+
+  &__decrement {
+    position: absolute;
+    right: 100%;
+    width: 44px;
+    border-radius: 10px 0 0 10px;
+  }
+
+  &__increment {
+    position: absolute;
+    left: 100%;
+    width: 44px;
+    border-radius: 0 10px 10px 0;
+  }
+
+  &__submit {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    border-radius: 0 0 10px 10px;
+  }
 }

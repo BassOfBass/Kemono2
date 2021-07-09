@@ -13,8 +13,7 @@ html {
 *::before,
 *::after {
   box-sizing: inherit;
-  // TODO: fix this rule
-  color: var(--colour0-primary);
+  transition-duration: var(--duration-global);
 }
 
 body {

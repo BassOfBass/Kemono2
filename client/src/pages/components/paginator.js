@@ -19,7 +19,7 @@ export function Paginator(element) {
   const selectorForm = paginator.querySelector(".paginator__selector");
   const pageSelector = selectorForm.querySelector(".form__input");
 
-  selectorForm.addEventListener("submit", );
+  selectorForm.addEventListener("submit", () => {});
 
   return paginator;
 };
