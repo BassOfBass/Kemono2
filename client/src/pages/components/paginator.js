@@ -18,9 +18,9 @@ export function Paginator(element) {
    */
   const selectorForm = paginator.querySelector(".paginator__selector");
   /**
-   * @type {[ HTMLLabelElement, HTMLButtonElement, HTMLInputElement, HTMLButtonElement, HTMLButtonElement ]}
+   * @type {[ HTMLLabelElement, HTMLInputElement, HTMLButtonElement, HTMLButtonElement, HTMLButtonElement ]}
    */
-  const [ label, decrement, input, increment, submit ] = selectorForm.children;
+  const [ label, input, decrement, increment ] = selectorForm.children;
 
   selectorForm.addEventListener("click", handlePageSelect(input, increment, decrement));
   selectorForm.addEventListener("submit", handlePageChange);
@@ -47,7 +47,7 @@ function handlePageSelect(input, increment, decrement) {
     if (button === decrement) {
       input.stepDown();
     }
-    
+
     if (button === increment) {
       input.stepUp();
     }

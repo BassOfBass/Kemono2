@@ -31,12 +31,6 @@
       <li class="paginator__page">
         <form class="paginator__selector">
           <label for="page-select" class="form_label paginator__label">Page:</label>
-          <button 
-            class="form__button paginator__decrement"
-            type="button"
-          >
-            -1
-          </button>
           <input 
             id="page-select" 
             class="form__input form__input--number paginator__number"
@@ -47,6 +41,12 @@
             step="1"
             value="{{ current_page }}" 
           >
+          <button 
+            class="form__button paginator__decrement"
+            type="button"
+          >
+            -1
+          </button>
           <button 
             class="form__button paginator__increment"
             type="button"
