@@ -42,14 +42,15 @@ function handlePageSelect(input, increment, decrement) {
     /**
      * @type {HTMLButtonElement}
      */
-     const button = event.target;
+    const button = event.target;
 
-     if (button === decrement) {
-       input.stepDown();
-     }
-     if (button === increment) {
-       input.stepUp();
-     }
+    if (button === decrement) {
+      input.stepDown();
+    }
+    
+    if (button === increment) {
+      input.stepUp();
+    }
   }
 }
 
