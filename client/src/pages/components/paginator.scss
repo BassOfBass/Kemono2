@@ -30,6 +30,7 @@
     width: min-content;
 
     &:not(:focus-within) {
+      & .paginator__label,
       & .paginator__decrement,
       & .paginator__increment,
       & .paginator__submit {
@@ -37,10 +38,15 @@
         visibility: hidden;
       }
 
+      & .paginator__number {
+        border-radius: 10px;
+      }
+
     }
   }
 
   &__number {
+    text-align: center;
     border-radius: 0;
   }
 
