@@ -1,4 +1,4 @@
-import { localStore } from "@wp/store";
+import { logOut } from "@wp/js/account";
 
 /**
  * @param {HTMLElement} header 
@@ -15,10 +15,7 @@ export function initShell(header, isLoggedIn) {
     `
     document.getElementById('logout').addEventListener('click', e => {
       e.preventDefault();
-      localStore.account.removeLogin();
-      localStore.favorites.removeFavouriteUsers();
-      localStore.favorites.removeFavouritePosts();
-      location.href = '/account/logout';
+      logOut();
     })
   } else {
     accButtons.innerHTML += `
