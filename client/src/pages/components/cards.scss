@@ -5,16 +5,17 @@
   display: flex;
   flex-flow: column nowrap;
   align-items: stretch;
+  min-height: 20em;
   background-color: var(--colour1-tertiary);
   border-radius: 10px;
   border: $size-thin solid transparent;
   transition-property: transform;
 
-  &--image {
-    & .post-card__body {
-      flex: 1 0 12em;
-    }
-  }
+  // &--image {
+  //   & .post-card__body {
+  //     flex: 1 0 12em;
+  //   }
+  // }
 
   &:hover,
   &:focus-within {

@@ -3,7 +3,7 @@
 {% macro post_card(post) %}
   {% set src = post.file.path if post.file.path and post.file.path|lower|regex_match("\.(gif|jpe?g|jpe|png|webp)$") %}
   <article 
-    class="post-card {{ 'post-card--image' if src }}"
+    class="post-card"
   > 
     <header class="post-card__header">  
       <h2 class="post-card__heading">
