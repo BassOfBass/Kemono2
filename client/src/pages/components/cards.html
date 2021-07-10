@@ -3,14 +3,19 @@
 {% macro post_card(post) %}
   {% set src = post.file.path if post.file.path and post.file.path|lower|regex_match("\.(gif|jpe?g|jpe|png|webp)$") %}
   <article 
-    class="post-card"
+    class="post-card {{ 'post-card--image' if src }}"
   > 
     <header class="post-card__header">  
       <h2 class="post-card__heading">
-        {{ post.title }}
+        <a 
+          href="/{{ post.service }}/user/{{ post.user }}/post/{{ post.id }}" 
+        >
+          {{ post.title }}
+        </a>
       </h2>
     </header>
-    <div class="post-card__body">
+    
+    <section class="post-card__body">
       {% if src %}
         <div class="post-card__image-container">
           {# TODO: move backup image logic to the script #}
@@ -20,30 +25,27 @@
           >
         </div>
       {% endif %}
-      {{ post.content|safe }}
+      <div class="comment__spacer"></div>
+      {# {{ post.content|safe }} #}
       {# {{ post.content|striptags }} #}
-    </div>
-    <footer class="post-card__footer">
-      <p class="post-card__link">
-        <a 
-          href="/{{ post.service }}/user/{{ post.user }}/post/{{ post.id }}" 
-        >
-          Read more...
-        </a>
-      </p>
-      {% if post.published %}
-        <div>
-          {{ timestamp(post.published) }}
+      <div class="comment__aux">
+        <div class="post__service">
+          {{ g.paysites[post.service].title }}
         </div>
-      {% endif %}
-      <div>
-        {% if post.attachments|length %}
-          {{ post.attachments|length }} {{ 'attachment' if post.attachments|length == 1 else 'attachments' }}
-        {% else %}
-          No attachments
+        {% if post.published %}
+          <div>
+            {{ timestamp(post.published) }}
+          </div>
         {% endif %}
+        <div>
+          {% if post.attachments|length %}
+            {{ post.attachments|length }} {{ 'attachment' if post.attachments|length == 1 else 'attachments' }}
+          {% else %}
+            No attachments
+          {% endif %}
+        </div>
       </div>
-    </footer>
+    </section>
   </article>      
 {% endmacro %}
 
