@@ -1,7 +1,9 @@
-{% macro card_list(layout='feature', class_name=none) %}
+{% macro card_list(layout='legacy', class_name=none) %}
   <div 
     class="card-list card-list--{{ layout }} {{ class_name if class_name }}"
   >
+    <div class="card-list__layout">
+    </div>
     <div class="card-list__items">
       {{ caller() }}
     </div>

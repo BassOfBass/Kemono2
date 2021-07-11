@@ -2,6 +2,10 @@
 
 .card-list {
 
+  &--legacy {
+    --card-size: 200px;
+  }
+
   &--feature {
     --card-size: #{$width-feature};
   }

@@ -3,11 +3,20 @@
 {% macro post_card(post) %}
   {% set src = post.file.path if post.file.path and post.file.path|lower|regex_match("\.(gif|jpe?g|jpe|png|webp)$") %}
   <article 
-    class="post-card {{ 'post-card--preview' if src }}"
+    class="post-card post-card--legacy {{ 'post-card--preview' if src }}"
     data-id="{{ post.id }}"
     data-service="{{ post.service }}"
     data-user="{{ post.user }}"
   > 
+    {% if src %}
+      <div class="post-card__image-container">
+        {# TODO: move backup image logic to the script #}
+        <img 
+          class="post-card__image"
+          src="/thumbnail{{ src|replace('https://kemono.party', '') }}" 
+        >
+      </div>
+    {% endif %}
     <header class="post-card__header">  
       <h2 class="post-card__heading">
         <a 
@@ -22,15 +31,6 @@
     </header>
     
     <section class="post-card__body">
-      {% if src %}
-        <div class="post-card__image-container">
-          {# TODO: move backup image logic to the script #}
-          <img 
-            class="post-card__image"
-            src="/thumbnail{{ src|replace('https://kemono.party', '') }}" 
-          >
-        </div>
-      {% endif %}
       {# {{ post.content|safe }} #}
       {# {{ post.content|striptags }} #}
       <div class="comment__aux">

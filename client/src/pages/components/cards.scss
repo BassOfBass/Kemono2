@@ -5,7 +5,7 @@
   display: flex;
   flex-flow: column nowrap;
   align-items: stretch;
-  min-height: 20em;
+  min-height: 13em;
   background-color: var(--colour1-tertiary);
   border-radius: 10px;
   border: $size-thin solid transparent;
@@ -14,9 +14,9 @@
   transition-property: transform, border-color;
 
   &--preview {
-    & .post-card__body {
-      flex: 1 0 13em;
-    }
+    // & .post-card__body {
+    //   flex: 1 0 13em;
+    // }
   }
 
   &--fav {
@@ -93,6 +93,7 @@
     right: 0;
     z-index: 1;
     background-color: var(--colour1-tertiary);
+    padding: 0;
     transition-property: opacity, visibility;
     transition-duration: var(--duration-global);
   }
