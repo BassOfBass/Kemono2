@@ -94,6 +94,7 @@
     z-index: 1;
     background-color: var(--colour1-tertiary);
     transition-property: opacity, visibility;
+    transition-duration: var(--duration-global);
   }
 
   &__image {
