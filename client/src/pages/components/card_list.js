@@ -1,28 +1,49 @@
 import { createComponent } from "./_index";
 
-const defaultLayouts = [
-  "feature",
-  "mobile",
-  "phone",
-  "tablet",
-  "laptop",
-  "desktop",
-]
-
 /**
  * TODO: layout switch button.
  * @param {HTMLElement} element 
- * @param {string[]} layouts 
  * @param {string} layout 
  */
-export function CardList(element=null, layout=defaultLayouts[0], layouts=defaultLayouts) {
+export function CardList(element=null, layout="feature") {
+  const {cardList, cardItems} = element
+    ? initFromElement(element)
+    : initFromScratch();
+  let currentLayout = layout;
+
+  return {
+    cardList, 
+    cardItems
+  };
+}
+
+/**
+ * @param {HTMLElement} element 
+ */
+function initFromElement(element) {
+  /**
+   * @type {NodeListOf<HTMLElement>}
+   */
+  const itemListElements = element.querySelectorAll(".card-list__items > *");
+
+  return {
+    cardList: element,
+    cardItems: Array.from(itemListElements)
+  };
+}
+
+function initFromScratch() {
   /**
    * @type {HTMLElement}
    */
-  const cardList = element
-    ? element
-    : createComponent("card-list");
-  let currentLayout = layout;
+  const cardList = createComponent("card-list");
+  /**
+   * @type {HTMLElement[]}
+   */
+  const cardItems = [];
 
-  return cardList;
+  return {
+    cardList,
+    cardItems
+  };
 }

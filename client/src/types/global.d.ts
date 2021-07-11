@@ -6,6 +6,30 @@ interface KemonoAPI {
 }
 
 namespace KemonoAPI {
+
+  interface Post {
+    id: string
+    service: string
+    title: string
+    user: string
+    added: string
+    published: string
+    attachments: string[]
+    content: string
+    edited: null
+    embed: {}
+    file: {}
+    shared_file: boolean
+  }
+
+  interface Artist {
+    id: string
+    name: string
+    service: string
+    indexed: string
+    updated: string
+  }
+  
   interface Favorites {
     retrieveFavoriteArtists: () => Promise<string>,
     favoriteArtist: (service: string, id: string) => Promise<boolean>,
@@ -16,29 +40,12 @@ namespace KemonoAPI {
   }
 
   namespace Favorites {
-    interface Artist {
-      id: string
-      name: string
-      service: string
+    interface Artist extends KemonoAPI.Artist {
       faved_seq: number
-      indexed: string
-      updated: string
     }
 
-    interface Post {
-      id: string
-      service: string
-      title: string
-      user: string
-      added: string
-      published: string
-      attachments: string[]
-      content: string
-      edited: null
-      embed: {}
+    interface Post extends KemonoAPI.Post {
       faved_seq: number
-      file: {}
-      shared_file: boolean
     }
   }
 

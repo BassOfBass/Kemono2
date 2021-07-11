@@ -1,40 +1,32 @@
 @use "../../css/variables" as *;
 
 .card-list {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: stretch;
 
   &--feature {
-
-    & > * {
-      flex: 0 0 $width-feature;
-    }
+    --card-size: #{$width-feature};
   }
 
   &--mobile {
-    
-    & > * {
-      flex: 0 0 $width-mobile;
-    }
+    --card-size: #{$width-mobile};
   }
 
   &--phone {
-
-    & > * {
-      flex: 0 0 $width-phone;
-    }
+    --card-size: #{$width-phone};
   }
 
   &--tablet {
-
-    & > * {
-      flex: 0 0 $width-tablet;
-    }
+    --card-size: #{$width-tablet};
   }
 
-  & > * {
-    margin: $size-small;
+  &__items {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: stretch;
+
+    & > * {
+      flex: 0 0 var(--card-size);
+      margin: $size-small;
+    }
   }
 }

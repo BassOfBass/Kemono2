@@ -127,11 +127,11 @@
     border:transparent;
     
     &--unfav {
-      color: hsl(51, 100%, 50%);
+      color: var(--favourite-colour1-primary);
 
       // hack to overwrite * selector color
       & span {
-        color: hsl(51, 100%, 50%);
+        color: var(--favourite-colour1-primary);
       }
     }
 

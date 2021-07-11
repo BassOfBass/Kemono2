@@ -9,13 +9,18 @@
   background-color: var(--colour1-tertiary);
   border-radius: 10px;
   border: $size-thin solid transparent;
+  overflow: hidden;
   transition-property: transform;
 
-  // &--image {
-  //   & .post-card__body {
-  //     flex: 1 0 12em;
-  //   }
-  // }
+  &--preview {
+    & .post-card__body {
+      flex: 1 0 13em;
+    }
+  }
+
+  &--fav {
+    border-color: var(--favourite-colour2-primary);
+  }
 
   &:hover,
   &:focus-within {
@@ -32,9 +37,24 @@
     padding: $size-small;
   }
 
-  &__header {}
+  &__header {
+
+    &--fav {
+      background-color: var(--favourite-colour2-primary);
+
+      & .post-card__user {
+        display: block;
+      }
+    }
+  }
   
   &__heading {}
+
+  &__user {
+    display: none;
+  }
+
+  &__name {}
 
   &__body {
     position: relative;
@@ -43,7 +63,7 @@
     flex-flow: column nowrap;
     justify-content: flex-end;
     align-items: center;
-    // overflow: hidden;
+    
     // word-break: break-all;
     // text-overflow: ellipsis;
     // line-height: 1.5;

@@ -17,6 +17,7 @@ $size-big: 2em;
 
 /* CSS variables */
 :root {
+  // base colours
   --colour0-primary: hsl(0, 0%, 95%);
   --colour0-secondary: hsl(0, 0%, 70%);
   --colour0-tertirary: hsl(0, 0%, 45%);
@@ -24,13 +25,14 @@ $size-big: 2em;
   --colour1-secondary: hsl(220, 7%, 25%);
   --colour1-tertiary: hsl(210, 15%, 5%);
 
+  --favourite-colour1-primary: hsl(51, 100%, 50%);
+  --favourite-colour2-primary: hsl(60, 100%, 30%);
   // links
   --anchour-color1-primary: hsl(200, 100%, 80%);
   --anchour-color1-secondary: hsl(200, 60%, 60%);
   --anchour-colour2-primary: hsl(210, 100%, 20%);
   --anchour-colour2-secondary: hsl(210, 70%, 30%);
 
-  --duration-global: 250ms;
-
-  --line-height: 1.5;
+  --duration-fast: 250ms;
+  --duration-global: var(--duration-fast);
 }

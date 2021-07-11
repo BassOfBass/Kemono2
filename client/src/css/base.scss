@@ -19,21 +19,17 @@ html {
 }
 
 body {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: stretch;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   min-height: 100%;
-  // TODO: remove it after rewriting all pages
-  max-width: 1280px;
   color: var(--colour0-primary);
   background-color: var(--colour1-primary);
   padding: 0;
   margin: 0 auto;
 
   & > * {
-    flex: 0 1 auto;
     padding: 0.5em 2em;
-
+    
     @media (max-width: $width-phone) {
       padding: 0.5em 1em;
     }
@@ -41,7 +37,9 @@ body {
 }
 
 main {
-  flex: 1 1 auto;
+  justify-self: stretch;
+  // TODO: remove it after rewriting all pages
+  max-width: 1280px;
 }
 
 h1 {

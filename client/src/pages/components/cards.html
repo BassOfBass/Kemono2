@@ -3,7 +3,10 @@
 {% macro post_card(post) %}
   {% set src = post.file.path if post.file.path and post.file.path|lower|regex_match("\.(gif|jpe?g|jpe|png|webp)$") %}
   <article 
-    class="post-card"
+    class="post-card {{ 'post-card--preview' if src }}"
+    data-id="{{ post.id }}"
+    data-service="{{ post.service }}"
+    data-user="{{ post.user }}"
   > 
     <header class="post-card__header">  
       <h2 class="post-card__heading">
@@ -13,6 +16,9 @@
           {{ post.title }}
         </a>
       </h2>
+      <p class="post-card__user">
+        By <span class="post-card__name">{{ post.user }}</span>
+      </p>
     </header>
     
     <section class="post-card__body">
@@ -25,7 +31,6 @@
           >
         </div>
       {% endif %}
-      <div class="comment__spacer"></div>
       {# {{ post.content|safe }} #}
       {# {{ post.content|striptags }} #}
       <div class="comment__aux">

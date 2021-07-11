@@ -1,5 +1,5 @@
-import { addFavouriteArtist, findFavouriteArtist, removeFavouriteArtist } from "@wp/js/favorites";
-import { createComponent } from "./components/_index";
+import { addFavouriteArtist, findFavouriteArtist, removeFavouriteArtist, findFavouritePost } from "@wp/js/favorites";
+import { CardList, createComponent, PostCard } from "./components/_index";
 
 /** 
  * @param {HTMLElement} section
@@ -11,8 +11,10 @@ export async function userPage(section) {
    * @type {HTMLElement}
    */
   const buttonsPanel = section.querySelector(".user-header__actions");
+  const cardListElement = section.querySelector(".card-list");
 
   await initButtons(buttonsPanel, artistID, artistService);
+  await initCardList(cardListElement);
 }
 
 /**
@@ -37,6 +39,22 @@ async function initButtons(panelElement, artistID, artistService) {
   favButton.addEventListener("click", handleFavouriting(artistID, artistService));
 
   panelElement.appendChild(favButton);
+}
+
+/**
+ * @param {HTMLElement} cardListElement 
+ */
+async function initCardList(cardListElement) {
+  const { cardItems } = CardList(cardListElement);
+
+  cardItems.forEach(async (card) => {
+    const { postID, userID, service } = PostCard(card);
+    const favPost = await findFavouritePost(service, userID, postID);
+
+    if (favPost) {
+      card.classList.add("post-card--fav");
+    }
+  });
 }
 
 /**
