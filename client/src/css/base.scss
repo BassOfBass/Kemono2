@@ -3,6 +3,7 @@
 html {
   box-sizing: border-box;
   height: 100%;
+  width: 100%;
   font-size: 100%;
   font-family: Helvetica, sans-serif;
   padding: 0;
@@ -15,17 +16,20 @@ html {
   box-sizing: inherit;
   // TODO: fix this rule
   color: var(--colour0-primary);
-  transition-duration: var(--duration-global);
+  // transition-duration: var(--duration-global);
 }
 
 body {
   display: grid;
+  // grid-template-columns: minmax(min-content, 1280px);
   grid-template-rows: auto 1fr auto;
+  justify-items: center;
   min-height: 100%;
+  width: 100%;
   color: var(--colour0-primary);
   background-color: var(--colour1-primary);
   padding: 0;
-  margin: 0 auto;
+  margin: 0;
 
   & > * {
     padding: 0.5em 2em;
@@ -37,9 +41,9 @@ body {
 }
 
 main {
-  justify-self: stretch;
   // TODO: remove it after rewriting all pages
-  max-width: 1280px;
+  // max-width: 1280px;
+
 }
 
 h1 {

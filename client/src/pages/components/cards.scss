@@ -10,7 +10,8 @@
   border-radius: 10px;
   border: $size-thin solid transparent;
   overflow: hidden;
-  transition-property: transform;
+  transition-duration: var(--duration-global);
+  transition-property: transform, border-color;
 
   &--preview {
     & .post-card__body {
@@ -38,7 +39,7 @@
   }
 
   &__header {
-
+    transition-property: background-color;
     &--fav {
       background-color: var(--favourite-colour2-primary);
 
