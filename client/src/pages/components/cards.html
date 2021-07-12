@@ -11,15 +11,15 @@
   > 
     {% if src %}
       <div class="post-card__view">
-        {{ button('Show', 'post-card__button', false) }}
-        <div class="post-card__image-container">
+        {{ button('Info', 'post-card__button', false) }}
+      </div>
+      <div class="post-card__image-container">
           {# TODO: move backup image logic to the script #}
           <img 
             class="post-card__image"
             src="/thumbnail{{ src|replace('https://kemono.party', '') }}" 
           >
         </div>
-      </div>
     {% endif %}
     <header class="post-card__header">  
       <h2 class="post-card__heading">

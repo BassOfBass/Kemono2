@@ -3,11 +3,5 @@
     class="button {{ class_name if class_name}}" 
     type="button"
     {{ 'tabindex=-1' if not is_focusable }}
-  >
-    {% if not caller %}
-      {{ text }}
-    {% else %}
-      {{ caller() }}
-    {% endif %}
-  </button>
+  >{{ text if not caller else caller() }}</button>
 {% endmacro %}

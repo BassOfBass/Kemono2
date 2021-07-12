@@ -11,7 +11,7 @@
   border: $size-thin solid transparent;
   overflow: hidden;
   transition-duration: var(--duration-global);
-  transition-property: border-color;
+  transition-property: border-color, box-shadow;
 
   &--preview {
     // & .post-card__body {
@@ -21,11 +21,13 @@
 
   &--fav {
     border-color: var(--favourite-colour2-primary);
+    
   }
 
   &:hover,
   &:focus-within {
-    border-color: var(--positive-colour1-secondary);
+    // border-color: var(--positive-colour1-secondary);
+    box-shadow: 0px 0px 3px 5px var(--positive-colour1-secondary);
 
     & .post-card__image-container {
       visibility: hidden;
@@ -61,15 +63,19 @@
     margin-bottom: 0.5em;
   }
 
+  // TODO: look into it further
   &__image-container {
-    position: relative;
-    top: 0;
+    position: absolute;
+    top: calc(44px + 0.5em);
     left: 0;
     bottom: 0;
     right: 0;
+    z-index: 1;
+    background-color: var(--colour1-tertiary);
     padding: 0;
     transition-property: opacity, visibility;
     transition-duration: var(--duration-global);
+    padding: 0;
   }
 
   &__image {
