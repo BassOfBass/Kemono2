@@ -1,0 +1,17 @@
+.button {
+  --local-colour1: var(--colour0-primary);
+
+  box-sizing: border-box;
+  min-height: 44px;
+  min-width: 44px;
+  font-family: inherit;
+  font-size: 100%;
+  color: var(--local-colour1);
+  background-image: linear-gradient(
+    hsl(0, 0%, 7%),
+    hsl(220, 7%, 17%)
+  );
+  border-radius: 5px;
+  border: none;
+  padding: 0.5em;
+}

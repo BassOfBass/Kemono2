@@ -9,6 +9,21 @@ export function PostCard(element = null, post = {}) {
     ? initFromElement(element)
     : initFromScratch(post);
 
+  const view = postCard.postCardElement.querySelector(".post-card__view");
+
+  if (view) {
+    /**
+     * @type {HTMLButtonElement}
+     */
+    const button = view.querySelector(".post-card__button");
+    /**
+     * @type {HTMLAnchorElement}
+     */
+    const link = postCard.postCardElement.querySelector(".post-card__link");
+
+    button.addEventListener("click", handlePostView(link));
+  }
+
   return postCard;
 };
 
@@ -39,5 +54,15 @@ function initFromScratch(post) {
     postID: post.id,
     service: post.service,
     userID: post.user
+  }
+}
+
+/**
+ * @param {HTMLAnchorElement} link
+ * @returns {(event: MouseEvent) => void}
+ */
+function handlePostView(link) {
+  return (event) => {
+    link.focus();
   }
 }

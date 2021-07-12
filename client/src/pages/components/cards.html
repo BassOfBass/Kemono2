@@ -1,4 +1,5 @@
 {% from 'components/timestamp.html' import timestamp %}
+{% from 'components/buttons.html' import button %}
 
 {% macro post_card(post) %}
   {% set src = post.file.path if post.file.path and post.file.path|lower|regex_match("\.(gif|jpe?g|jpe|png|webp)$") %}
@@ -9,17 +10,21 @@
     data-user="{{ post.user }}"
   > 
     {% if src %}
-      <div class="post-card__image-container">
-        {# TODO: move backup image logic to the script #}
-        <img 
-          class="post-card__image"
-          src="/thumbnail{{ src|replace('https://kemono.party', '') }}" 
-        >
+      <div class="post-card__view">
+        {{ button('Show', 'post-card__button', false) }}
+        <div class="post-card__image-container">
+          {# TODO: move backup image logic to the script #}
+          <img 
+            class="post-card__image"
+            src="/thumbnail{{ src|replace('https://kemono.party', '') }}" 
+          >
+        </div>
       </div>
     {% endif %}
     <header class="post-card__header">  
       <h2 class="post-card__heading">
         <a 
+          class="post-card__link"
           href="/{{ post.service }}/user/{{ post.user }}/post/{{ post.id }}" 
         >
           {{ post.title }}
