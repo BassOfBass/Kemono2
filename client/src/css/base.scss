@@ -23,7 +23,7 @@ body {
   display: grid;
   // grid-template-columns: minmax(min-content, 1280px);
   grid-template-rows: auto 1fr auto;
-  justify-items: center;
+  justify-items: stretch;
   min-height: 100%;
   width: 100%;
   color: var(--colour0-primary);

@@ -1,6 +1,6 @@
 {% extends 'components/shell.html' %}
 {% block content %}
-  <div class="page" id="page">
+  <section class="site-section site-section--artists page" id="page">
     <div class="no-posts" id="loading">
       <span class="subtitle">
         Loading creator index... (please wait before searching)
@@ -58,4 +58,5 @@
     <script src="https://unpkg.com/unfetch@4.1.0/polyfill/index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <script src="{{ url_for('static', filename='js/artists.js') }}"></script>
+  <section>
 {% endblock %}
